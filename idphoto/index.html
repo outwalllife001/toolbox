@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>一键证件照 · 开源宝藏工具箱</title>
+<meta name="description" content="手机随手拍一张，3 秒生成标准证件照：一寸二寸、蓝白红底、六寸排版、压缩到指定 KB。照片只在你的手机里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>一键证件照</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+</header>
+
+<main>
+  <section class="card" id="step-upload">
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="image/*" hidden>
+      <img id="srcPreview" alt="" hidden>
+      <span class="drop-empty" id="dropEmpty">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="11" width="36" height="28" rx="6"/><circle cx="24" cy="25" r="7"/><path d="M17 11l3-5h8l3 5"/></svg>
+        <b>上传 / 拍一张照片</b>
+        <small>正脸、露出耳朵眉毛，光线均匀就行，背景随意</small>
+      </span>
+    </label>
+  </section>
+
+  <section class="card">
+    <h2>尺寸</h2>
+    <div class="chips" id="sizes"></div>
+    <h2>底色</h2>
+    <div class="swatches" id="colors"></div>
+    <button class="primary" id="go" disabled>生成证件照</button>
+    <p class="status" id="status">正在准备 AI 模型…</p>
+  </section>
+
+  <section class="card result" id="result" hidden>
+    <div class="photo-wrap"><img id="out" alt="证件照结果"></div>
+    <p class="meta" id="meta"></p>
+    <div class="swatches small" id="colors2"></div>
+    <div class="actions">
+      <a class="btn" id="dlStd" download>保存标准照</a>
+      <button class="btn" id="mkLayout">六寸排版照</button>
+    </div>
+    <div class="kb">
+      <span>压缩到</span><input id="kb" type="number" inputmode="numeric" value="200" min="10" max="2000"><span>KB 以内</span>
+      <button class="btn ghost" id="mkKb">压缩</button>
+    </div>
+    <p class="kb-out" id="kbOut" hidden></p>
+    <div class="layout" id="layoutBox" hidden>
+      <img id="layoutImg" alt="六寸排版照">
+      <p class="meta" id="layoutMeta"></p>
+      <a class="btn" id="dlLayout" download>保存排版照</a>
+    </div>
+    <p class="hint">在微信 / 抖音里打不开下载？长按图片即可保存。</p>
+  </section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>照片会上传吗？</summary><p>不会。抠图和裁剪都在你的手机浏览器里完成，页面没有任何上传接口。</p></details>
+    <details><summary>排版照怎么打印？</summary><p>保存「六寸排版照」，发给打印店或在线冲印选 6 寸（4R）照片纸，打印后沿灰线裁开。</p></details>
+    <details><summary>报名系统要求多少 KB？</summary><p>以报名网站的要求为准，把数字填进「压缩到 __ KB 以内」即可。尺寸不在列表里的，用最接近的再按网站要求调整。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>算法来自开源项目 <a href="https://github.com/Zeyi-Lin/HivisionIDPhotos" target="_blank" rel="noopener">HivisionIDPhotos</a>（Apache-2.0），浏览器端移植与界面由开源宝藏工具箱制作。</p>
+  <p>人脸检测：MediaPipe BlazeFace（Apache-2.0）· 推理：ONNX Runtime Web（MIT）</p>
+</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>

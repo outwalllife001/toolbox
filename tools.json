@@ -1,0 +1,13 @@
+[
+  {
+    "day": 1,
+    "slug": "idphoto",
+    "name": "一键证件照",
+    "pain": "别再花几十块去照相馆拍证件照",
+    "desc": "随手拍一张 → 一寸/二寸/考试报名照，蓝白红底一键换，六寸排版打印，压缩到指定 KB。",
+    "source": "HivisionIDPhotos",
+    "source_url": "https://github.com/Zeyi-Lin/HivisionIDPhotos",
+    "license": "Apache-2.0",
+    "tags": ["图片", "考试", "求职"]
+  }
+]
