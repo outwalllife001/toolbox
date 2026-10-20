@@ -74,3 +74,7 @@ footer { max-width: 480px; margin: 0 auto; padding: 0 16px 28px; font-size: 12px
 footer a { color: var(--pri); }
 .flash { animation: flash .5s ease; }
 @keyframes flash { from { transform: scale(.96); opacity: .4; } to { transform: none; opacity: 1; } }
+.service h2 b { color: #e5484d; margin-left: 4px; }
+.service p { margin: 4px 0 0; font-size: 14px; }
+.service .contact { font-weight: 700; color: var(--ink); margin-top: 8px; }
+.service img { display: block; width: 160px; margin: 10px auto 0; border-radius: 8px; }

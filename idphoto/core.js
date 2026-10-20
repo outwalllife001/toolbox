@@ -33,15 +33,19 @@ export async function loadModels(onProgress = () => {}) {
 async function fetchWithProgress(url, onP) {
   const r = await fetch(url);
   if (!r.ok) throw new Error('模型下载失败：' + r.status);
+  // 线上（GitHub Pages）会 gzip：content-length 是压缩后的长度，流里拿到的是解压后的字节，
+  // 所以不能按 content-length 预分配，只拿它估进度
   const total = +r.headers.get('content-length') || 0;
-  if (!total || !r.body) return new Uint8Array(await r.arrayBuffer());
-  const out = new Uint8Array(total); let got = 0;
-  const rd = r.body.getReader();
+  if (!r.body) return new Uint8Array(await r.arrayBuffer());
+  const chunks = [], rd = r.body.getReader(); let got = 0;
   for (;;) {
     const { done, value } = await rd.read();
     if (done) break;
-    out.set(value, got); got += value.length; onP(got / total);
+    chunks.push(value); got += value.length;
+    if (total) onP(Math.min(0.99, got / total));
   }
+  const out = new Uint8Array(got); let o = 0;
+  for (const c of chunks) { out.set(c, o); o += c.length; }
   return out;
 }
 

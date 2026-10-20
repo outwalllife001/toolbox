@@ -121,3 +121,11 @@ $('mkKb').addEventListener('click', async () => {
   $('kbOut').innerHTML = `已压缩到 ${(blob.size / 1024).toFixed(0)} KB ✓ <a href="${url}" download="${a.download}">保存</a>`;
   $('kbOut').hidden = false;
 });
+
+// 代做入口：site/config.js 里配置了才显示
+const svc = window.SITE_CONFIG && window.SITE_CONFIG.service;
+if (svc) {
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  $('service').innerHTML = `<h2>找我代做 <b>${esc(svc.price)}</b></h2><p>${esc(svc.text)}</p><p class="contact">${esc(svc.contact)}</p>${svc.qr ? `<img src="../${esc(svc.qr)}" alt="联系方式二维码">` : ''}`;
+  $('service').hidden = false;
+}
