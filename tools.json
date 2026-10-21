@@ -9,5 +9,16 @@
     "source_url": "https://github.com/Zeyi-Lin/HivisionIDPhotos",
     "license": "Apache-2.0",
     "tags": ["图片", "考试", "求职"]
+  },
+  {
+    "day": 2,
+    "slug": "scan",
+    "name": "拍照变扫描件",
+    "pain": "别再为了扫描几页纸跑打印店",
+    "desc": "手机拍一张，自动找纸张四角拉正、去掉阴影变白底黑字，多页合成 PDF，可压到指定大小。",
+    "source": "jscanify + OpenCV.js",
+    "source_url": "https://github.com/puffinsoft/jscanify",
+    "license": "MIT / Apache-2.0",
+    "tags": ["PDF", "作业", "办公"]
   }
 ]

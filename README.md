@@ -7,6 +7,7 @@
 | 工具 | 基于的开源项目 | 许可证 |
 |---|---|---|
 | [一键证件照](idphoto/) | [HivisionIDPhotos](https://github.com/Zeyi-Lin/HivisionIDPhotos) | Apache-2.0 |
+| [拍照变扫描件](scan/) | [jscanify](https://github.com/puffinsoft/jscanify) + [OpenCV.js](https://github.com/opencv/opencv) | MIT / Apache-2.0 |
 
 第三方运行时与模型见 [vendor/README.md](vendor/README.md)、[models/README.md](models/README.md)。
 本仓库由私有工作仓库自动发布，请不要直接在这里改。

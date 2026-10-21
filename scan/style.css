@@ -1,0 +1,86 @@
+:root {
+  --bg: #f3f5f9; --card: #fff; --ink: #141a26; --sub: #667085; --line: #e4e8f0;
+  --pri: #2f6bff; --pri-ink: #fff; --pri-soft: #e8efff; --ok: #12b76a;
+  --radius: 18px;
+  color-scheme: light;
+}
+[hidden] { display: none !important; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+.top { padding: 18px 16px 6px; text-align: center; }
+.brand { display: inline-block; font-size: 12px; color: var(--sub); text-decoration: none; letter-spacing: .08em; }
+h1 { margin: 2px 0 6px; font-size: 26px; letter-spacing: .02em; }
+.tag { margin: 0; display: flex; gap: 6px; justify-content: center; }
+.tag span { font-size: 12px; padding: 2px 10px; border-radius: 99px; background: var(--pri-soft); color: var(--pri); font-weight: 600; }
+main { max-width: 480px; margin: 0 auto; padding: 8px 12px 16px; }
+.card { background: var(--card); border-radius: var(--radius); padding: 14px; margin: 10px 0; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+h2 { font-size: 14px; margin: 2px 0 8px; color: var(--sub); font-weight: 600; }
+.chips + h2, .thumbs + h2 { margin-top: 14px; }
+
+.drop { display: flex; align-items: center; justify-content: center; min-height: 148px; border: 2px dashed #c9d3e6; border-radius: 14px; cursor: pointer; overflow: hidden; background: #fafbfe; }
+.drop-empty { display: grid; justify-items: center; gap: 4px; padding: 16px; text-align: center; }
+.drop-empty svg { width: 40px; height: 40px; fill: none; stroke: var(--pri); stroke-width: 3; stroke-linejoin: round; }
+.drop-empty b { font-size: 16px; }
+.drop-empty small { color: var(--sub); font-size: 12px; }
+
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1.5px solid var(--line); background: #fff; color: var(--ink); border-radius: 12px; padding: 6px 12px; font: inherit; font-size: 14px; text-align: left; line-height: 1.25; }
+.chip small { display: block; font-size: 11px; color: var(--sub); }
+.chip.on { border-color: var(--pri); background: var(--pri-soft); color: var(--pri); font-weight: 600; }
+.chip.on small { color: var(--pri); }
+
+.primary { display: block; width: 100%; margin-top: 8px; border: 0; border-radius: 14px; padding: 14px; font: inherit; font-size: 17px; font-weight: 700; color: var(--pri-ink); background: var(--pri); box-shadow: 0 6px 16px rgba(47,107,255,.28); }
+.primary:disabled { opacity: .45; box-shadow: none; }
+.status { margin: 8px 0 0; text-align: center; font-size: 13px; color: var(--sub); min-height: 20px; }
+.status.busy::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 6px; vertical-align: -1px; border: 2px solid var(--pri); border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; }
+.status.done { color: var(--ok); font-weight: 600; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn { display: block; text-align: center; text-decoration: none; border: 0; border-radius: 12px; padding: 11px 8px; font: inherit; font-size: 15px; font-weight: 600; color: var(--pri); background: var(--pri-soft); cursor: pointer; }
+.hint { font-size: 12px; color: var(--sub); text-align: center; margin: 12px 0 0; }
+
+/* 确认边框：照片 + 可拖动的四边形 */
+.crop { position: relative; display: flex; justify-content: center; background: #1b2033; border-radius: 12px; padding: 8px; touch-action: none; }
+.crop canvas { display: block; max-width: 100%; max-height: 300px; border-radius: 4px; }
+.crop svg { position: absolute; overflow: visible; }
+#quad { fill: rgba(47,107,255,.16); stroke: #4d8bff; stroke-width: 2.5; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+#quad.draw { animation: draw .7s ease-out; }
+@keyframes draw { from { stroke-dasharray: 0 2000; fill-opacity: 0; } to { stroke-dasharray: 2000 0; fill-opacity: 1; } }
+.handle { fill: #fff; stroke: #2f6bff; stroke-width: 3; vector-effect: non-scaling-stroke; cursor: grab; }
+#editor .hint { margin-top: 8px; }
+
+/* 结果 */
+.page-wrap { display: flex; justify-content: center; padding: 10px; background: #e9edf4; border-radius: 12px; }
+.page-wrap img { display: block; max-width: 100%; max-height: 330px; background: #fff; box-shadow: 0 4px 14px rgba(16,24,40,.18); }
+.modes { margin-top: 10px; justify-content: center; }
+.modes #rotate { margin-left: 4px; }
+.thumbs { display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 4px; scrollbar-width: none; }
+.thumbs::-webkit-scrollbar { display: none; }
+.thumb { position: relative; flex: none; width: 58px; padding: 0; border: 2px solid var(--line); border-radius: 8px; background: #fff; overflow: hidden; }
+.thumb img { display: block; width: 100%; }
+.thumb.on { border-color: var(--pri); }
+.thumb b { position: absolute; left: 3px; bottom: 3px; font-size: 11px; line-height: 16px; min-width: 16px; border-radius: 8px; background: rgba(20,26,38,.7); color: #fff; }
+.thumb i { position: absolute; right: 2px; top: 2px; width: 18px; height: 18px; border-radius: 50%; background: rgba(20,26,38,.65); color: #fff; font: 13px/18px sans-serif; font-style: normal; }
+.thumb.add { display: grid; place-content: center; text-align: center; min-height: 80px; border-style: dashed; color: var(--pri); font-size: 12px; font-weight: 600; cursor: pointer; }
+.thumb.add span { font-size: 22px; line-height: 1; }
+.btn.save { margin-top: 14px; }
+.pdf-out { margin: 8px 0 0; text-align: center; font-size: 14px; color: var(--ok); font-weight: 600; }
+.pdf-out a { margin-left: 6px; color: var(--pri); }
+
+.faq details { border-top: 1px solid var(--line); padding: 10px 0; }
+.faq details:first-of-type { border-top: 0; }
+.faq summary { font-weight: 600; cursor: pointer; }
+.faq p { margin: 6px 0 0; color: var(--sub); font-size: 14px; }
+footer { max-width: 480px; margin: 0 auto; padding: 0 16px 28px; font-size: 12px; color: var(--sub); text-align: center; }
+footer a { color: var(--pri); }
+.flash { animation: flash .5s ease; }
+@keyframes flash { from { transform: scale(.96); opacity: .4; } to { transform: none; opacity: 1; } }
+.service h2 b { color: #e5484d; margin-left: 4px; }
+.service p { margin: 4px 0 0; font-size: 14px; }
+.service .contact { font-weight: 700; color: var(--ink); margin-top: 8px; }
+.service img { display: block; width: 160px; margin: 10px auto 0; border-radius: 8px; }

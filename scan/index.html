@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>拍照变扫描件 · 开源宝藏工具箱</title>
+<meta name="description" content="手机拍一张作业、合同、材料，自动找纸张四角拉正、去掉阴影，变成白底黑字的扫描件，多页合成 PDF。照片只在你的手机里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>拍照变扫描件</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+</header>
+
+<main>
+  <input type="file" id="file" accept="image/*" multiple hidden>
+  <section class="card" id="step-upload">
+    <label class="drop" id="drop" for="file">
+      <span class="drop-empty">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 5h17l9 9v29H12z"/><path d="M29 5v9h9"/><path d="M18 24h14M18 31h14M18 38h9"/></svg>
+        <b>拍照 / 选择照片</b>
+        <small>作业、合同、发票、证明材料都行；一次可以选多张，一张一页</small>
+      </span>
+    </label>
+    <p class="status" id="status0">正在准备扫描引擎…</p>
+  </section>
+
+  <section class="card" id="editor" hidden>
+    <h2 id="edTitle">第 1 页 · 确认纸张边框</h2>
+    <div class="crop" id="crop">
+      <canvas id="cropCanvas"></canvas>
+      <svg id="cropSvg"><polygon id="quad"/></svg>
+    </div>
+    <p class="hint" id="edHint">已自动找到纸张四角，不准的话拖动圆点</p>
+    <button class="primary" id="go" disabled>生成扫描件</button>
+    <p class="status" id="status"></p>
+  </section>
+
+  <section class="card result" id="result" hidden>
+    <div class="page-wrap"><img id="out" alt="扫描件"></div>
+    <div class="chips modes" id="modes">
+      <button class="chip on" data-m="scan">扫描件</button>
+      <button class="chip" data-m="bw">黑白</button>
+      <button class="chip" data-m="raw">原图</button>
+      <button class="chip" id="rotate">↻ 旋转</button>
+    </div>
+    <h2 id="pagesTitle">已扫描 1 页</h2>
+    <div class="thumbs" id="thumbs"></div>
+    <h2>PDF 大小</h2>
+    <div class="chips" id="pdfSizes">
+      <button class="chip on" data-kb="0">原画质</button>
+      <button class="chip" data-kb="2048">2MB 内</button>
+      <button class="chip" data-kb="1024">1MB 内</button>
+      <button class="chip" data-kb="500">500KB 内</button>
+    </div>
+    <button class="primary" id="mkPdf">导出 PDF</button>
+    <p class="pdf-out" id="pdfOut" hidden></p>
+    <a class="btn save" id="dlPage" download>保存这一页图片</a>
+    <p class="hint">在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」；图片也可以长按保存。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>照片会上传吗？</summary><p>不会。找边框、拉正、去阴影、合成 PDF 都在你的手机浏览器里完成，页面没有任何上传接口。</p></details>
+    <details><summary>边框识别得不准怎么办？</summary><p>拖动四个圆点对准纸的四个角就行。拍的时候让四个角都在画面里、纸放在颜色比纸深的桌面上，识别最准。</p></details>
+    <details><summary>为什么有的影子去不干净？</summary><p>手影、台灯造成的大片阴影能去掉；树叶、窗格这类细碎的影子和字迹很难区分，会留下浅灰的印子。拍的时候尽量换个位置避开。</p></details>
+    <details><summary>扫描件能用来交材料吗？</summary><p>效果接近复印件，适合交作业、报销、办事交材料。具体是否接受手机扫描件，以收材料的单位要求为准。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>纸张拉正基于开源项目 <a href="https://github.com/puffinsoft/jscanify" target="_blank" rel="noopener">jscanify</a>（MIT），图像处理用 <a href="https://github.com/opencv/opencv" target="_blank" rel="noopener">OpenCV.js</a>（Apache-2.0）。</p>
+  <p>找纸张四角和去阴影的算法由开源宝藏工具箱改进；界面由开源宝藏工具箱制作。</p>
+</footer>
+<script src="../config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

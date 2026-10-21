@@ -8,5 +8,8 @@ window.SITE_CONFIG = {
   //   text: '不会弄 / 没时间？把照片发给我，10 分钟内做好发你（标准照 + 六寸排版 + 指定 KB）',
   //   contact: '微信：your-wechat-id',
   //   qr: 'img/wechat-qr.jpg',      // 可选：放到 site/img/
+  //   tools: {                      // 可选：某个工具页单独的价格和说明（不填就用上面的）
+  //     scan: { price: '¥5', text: '照片发我，帮你拉正去阴影、合成一份 PDF，压到指定大小' },
+  //   },
   // },
 };
