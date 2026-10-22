@@ -8,7 +8,11 @@
     "source": "HivisionIDPhotos",
     "source_url": "https://github.com/Zeyi-Lin/HivisionIDPhotos",
     "license": "Apache-2.0",
-    "tags": ["图片", "考试", "求职"]
+    "tags": [
+      "图片",
+      "考试",
+      "求职"
+    ]
   },
   {
     "day": 2,
@@ -19,6 +23,25 @@
     "source": "jscanify + OpenCV.js",
     "source_url": "https://github.com/puffinsoft/jscanify",
     "license": "MIT / Apache-2.0",
-    "tags": ["PDF", "作业", "办公"]
+    "tags": [
+      "PDF",
+      "作业",
+      "办公"
+    ]
+  },
+  {
+    "day": 3,
+    "slug": "cutout",
+    "name": "AI 抠图 · 白底图",
+    "pain": "别再一张张找人抠商品图",
+    "desc": "随手拍的商品照片，一键抠掉背景：透明 PNG、白底主图、换底色、加投影，800×800 正方形自动排好。",
+    "source": "rembg（isnet-general-use）",
+    "source_url": "https://github.com/danielgatis/rembg",
+    "license": "MIT / Apache-2.0",
+    "tags": [
+      "图片",
+      "电商",
+      "小商家"
+    ]
   }
 ]

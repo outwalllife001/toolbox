@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 抠图 · 商品白底图 · 开源宝藏工具箱</title>
+<meta name="description" content="上传随手拍的商品照片，AI 自动抠掉背景：透明 PNG、白底主图、换底色、加投影，800×800 正方形一键排好。照片只在你的手机里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>AI 抠图 · 白底图</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+</header>
+
+<main>
+  <input type="file" id="file" accept="image/*" hidden>
+  <section class="card" id="step-upload">
+    <label class="drop" id="drop" for="file">
+      <img id="srcPreview" alt="" hidden>
+      <span class="drop-empty" id="dropEmpty">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="6"/><path d="M6 31l10-9 8 7 6-5 12 10"/><circle cx="31" cy="18" r="3.5"/></svg>
+        <b>上传 / 拍一张商品照片</b>
+        <small>背景乱一点也没关系；商品完整在画面里、别太小就行</small>
+      </span>
+    </label>
+    <button class="primary" id="go" disabled>一键抠图</button>
+    <p class="status" id="status">正在准备 AI 模型…</p>
+  </section>
+
+  <section class="card result" id="result" hidden>
+    <div class="view" id="view">
+      <div class="view-in" id="viewIn">
+        <img id="out" alt="抠图结果">
+        <img id="orig" alt="" hidden>
+        <canvas id="brushCanvas" hidden></canvas>
+        <i class="sweep" id="sweep" hidden></i>
+      </div>
+    </div>
+    <div class="view-tools">
+      <button class="mini" id="hold">按住看原图</button>
+      <button class="mini" id="editBtn">✎ 修边</button>
+    </div>
+
+    <div class="edit" id="edit" hidden>
+      <div class="chips">
+        <button class="chip on" data-mode="erase">擦掉多余</button>
+        <button class="chip" data-mode="restore">补回缺的</button>
+        <button class="chip" id="undo">↶ 撤销</button>
+      </div>
+      <label class="range">笔刷 <input type="range" id="brushSize" min="6" max="80" value="24"></label>
+      <p class="hint">在图上涂抹；淡淡的是原图，方便看哪里缺了</p>
+      <button class="btn" id="editDone">修好了</button>
+    </div>
+
+    <div id="opts">
+      <h2>背景</h2>
+      <div class="swatches" id="bgs"></div>
+      <h2>尺寸</h2>
+      <div class="chips" id="layouts"></div>
+      <div class="chips toggles">
+        <button class="chip" id="shadow">加投影</button>
+        <button class="chip" id="fine" hidden>精细模式重抠</button>
+      </div>
+      <p class="meta" id="meta"></p>
+      <a class="primary save" id="dl" download>保存图片</a>
+      <button class="btn" id="again">换一张</button>
+      <p class="hint">在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」；也可以长按上面的图片保存。</p>
+    </div>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>照片会上传吗？</summary><p>不会。抠图、换背景、排版都在你的手机浏览器里完成，页面没有任何上传接口。</p></details>
+    <details><summary>哪些照片抠得好？</summary><p>商品、杯子、包、鞋、摆件、食物、人像都可以。商品和背景颜色差别越大越干净。透明玻璃、细头发丝、和背景颜色几乎一样的东西容易抠不干净，可以用「修边」手动擦掉或补回。</p></details>
+    <details><summary>电商主图要什么尺寸？</summary><p>很多平台的主图是 800×800 以上的正方形，白底图一般要求纯白背景、不带文字和水印。具体以你所在平台的最新要求为准。</p></details>
+    <details><summary>第一次打开为什么要等？</summary><p>要下载约 42MB 的 AI 模型和运行库（只下载一次，之后走缓存）。建议连 Wi-Fi 打开。手机上抠一张要几秒到二十几秒，看手机性能。</p></details>
+    <details><summary>保存的是什么格式？</summary><p>选「透明」背景保存 PNG（可以直接拖进海报、PPT 里用）；选了颜色背景保存 JPG，体积更小。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>抠图模型来自开源项目 <a href="https://github.com/danielgatis/rembg" target="_blank" rel="noopener">rembg</a>（MIT）的 isnet-general-use，即 <a href="https://github.com/xuebinqin/DIS" target="_blank" rel="noopener">DIS / IS-Net</a>（Apache-2.0），为网页压缩了权重体积。</p>
+  <p>推理：ONNX Runtime Web（MIT）· 浏览器端移植与界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
