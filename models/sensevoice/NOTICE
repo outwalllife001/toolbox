@@ -1,0 +1,6 @@
+SenseVoiceSmall
+作者 / Author: Alibaba Group (FunAudioLLM / iic)
+来源 / Source: https://github.com/QwenAudio/SenseVoice  https://huggingface.co/FunAudioLLM/SenseVoiceSmall
+ONNX int8 导出 / export: k2-fsa/sherpa-onnx, sherpa-onnx-sense-voice-zh-en-ja-ko-yue-int8-2024-07-17 (https://github.com/k2-fsa/sherpa-onnx/releases/tag/asr-models)
+权重原样未修改，只拆成 3 片 / Weights unmodified, only split into 3 parts.
+许可证 / License: FunASR Model Open Source License v1.1 (MODEL_LICENSE)

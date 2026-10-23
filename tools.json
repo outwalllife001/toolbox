@@ -43,5 +43,20 @@
       "电商",
       "小商家"
     ]
+  },
+  {
+    "day": 4,
+    "slug": "subtitle",
+    "name": "视频自动加字幕",
+    "pain": "别再一句句手打视频字幕",
+    "desc": "上传口播视频，AI 自动听写出字幕、对好时间，能改字、换样式，一键导出带字幕的 MP4 或 SRT 字幕文件。",
+    "source": "SenseVoice + sherpa-onnx",
+    "source_url": "https://github.com/QwenAudio/SenseVoice",
+    "license": "MIT / FunASR 模型许可证 / Apache-2.0",
+    "tags": [
+      "视频",
+      "自媒体",
+      "字幕"
+    ]
   }
 ]

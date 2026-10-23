@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>视频自动加字幕 · 开源宝藏工具箱</title>
+<meta name="description" content="上传口播视频，AI 自动听写出字幕、对好时间，能改字、换样式，一键导出带字幕的 MP4 或 SRT 字幕文件。视频只在你的设备里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>视频自动加字幕</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+</header>
+
+<main>
+  <input type="file" id="file" accept="video/*,audio/*,.mp4,.mov,.m4v,.webm,.mkv,.m4a,.mp3,.wav,.aac" hidden>
+  <section class="card" id="step-upload">
+    <label class="drop" id="drop" for="file">
+      <span class="drop-empty">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="28" height="28" rx="6"/><path d="M33 20l10-6v20l-10-6z"/><path d="M11 31h16M14 26h10"/></svg>
+        <b>上传 / 拍一段视频</b>
+        <small>口播、vlog、网课都行；普通话、粤语、英语都能认</small>
+      </span>
+    </label>
+    <div class="player" id="player" hidden>
+      <div class="player-in" id="playerIn">
+        <video id="video" playsinline preload="auto"></video>
+        <canvas id="overlay"></canvas>
+        <button class="play" id="playBtn" aria-label="播放"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        <i class="seek" id="seek"><i id="seekIn"></i></i>
+      </div>
+      <button class="close" id="closeFull" aria-label="退出全屏">✕</button>
+    </div>
+    <div class="file-row" id="fileRow" hidden><span id="fileInfo"></span><button class="mini" id="change">换一个</button></div>
+    <div class="lang"><span>说的是</span><div class="chips" id="langs"></div></div>
+    <button class="primary" id="go" disabled>自动识别字幕</button>
+    <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+    <p class="status" id="status"></p>
+  </section>
+
+  <section class="card result" id="result" hidden>
+    <div class="head"><h2>字幕 <small id="cueCount"></small></h2><button class="mini" id="fullBtn">⛶ 全屏看效果</button></div>
+    <ol class="cues" id="cues"></ol>
+    <p class="hint">点文字直接改，删空就是不要这一句；点时间跳到那里播放</p>
+    <h2>样式</h2>
+    <div class="chips" id="styles"></div>
+    <div class="two">
+      <div class="opt"><span>大小</span><div class="chips" id="sizes"></div></div>
+      <div class="opt"><span>位置</span><div class="chips" id="poss"></div></div>
+    </div>
+    <button class="primary" id="export">导出带字幕的视频</button>
+    <div class="bar" id="ebar" hidden><i id="ebarIn"></i></div>
+    <p class="status" id="estatus"></p>
+    <a class="primary save" id="dl" hidden download>保存视频</a>
+    <div class="btns"><button class="btn" id="srt">下载 SRT 字幕</button><button class="btn" id="copy">复制全部文字</button></div>
+    <p class="hint">在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」。SRT 字幕文件可以导入常见的剪辑软件。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>视频会上传吗？</summary><p>不会。听写字幕、导出视频都在你的浏览器里完成，页面没有任何上传接口。</p></details>
+    <details><summary>第一次为什么要等？</summary><p>要下载 AI 语音识别模型，约 160MB（只下载一次，存在浏览器里，之后打开直接用）。建议连 Wi-Fi。</p></details>
+    <details><summary>识别要多久？</summary><p>我们实测：1 分钟的口播，电脑上约 9 秒；模拟手机（CPU 降速 4–6 倍）约 30–40 秒，看手机性能。识别时别切到别的 App。</p></details>
+    <details><summary>认得准吗？</summary><p>普通话、粤语、英语、日语、韩语都能认，会自动加标点、断句。说话清楚、背景音乐小的时候最准；人名、专业词、同音字可能写错，点一下字幕直接改。</p></details>
+    <details><summary>导出的视频画质会变差吗？</summary><p>画面会重新编码一遍（高画质），声音原样保留。有的 App 内置浏览器导出不了视频，可以换手机自带浏览器 / 电脑 Chrome，或者下载 SRT 字幕导入剪辑软件。</p></details>
+    <details><summary>多长的视频都行吗？</summary><p>建议 10 分钟以内；手机上建议 3 分钟以内。运行时要占用约 1GB 内存，老手机可能吃力，可以换电脑用。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>语音识别模型：<a href="https://github.com/QwenAudio/SenseVoice" target="_blank" rel="noopener">SenseVoiceSmall</a>（阿里巴巴 FunAudioLLM 团队开源，<a href="https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE" target="_blank" rel="noopener">FunASR 模型许可证</a>），使用 <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener">sherpa-onnx</a>（Apache-2.0）导出的 int8 版，推理流程移植自 sherpa-onnx。</p>
+  <p>视频导出：<a href="https://github.com/Vanilagy/mediabunny" target="_blank" rel="noopener">Mediabunny</a>（MPL-2.0）· 推理：ONNX Runtime Web（MIT）· 浏览器端移植与界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
