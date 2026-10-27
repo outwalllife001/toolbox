@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>汉字笔顺字帖 · 开源宝藏工具箱</title>
+<meta name="description" content="输入这周的生字，每个字的笔顺一笔一画动画演示，孩子能在手机上跟着描；自动排好带拼音、笔顺、描红的田字格 / 米字格字帖，下载 A4 PDF 直接打印。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>汉字笔顺字帖</h1>
+  <p class="tag"><span>免费</span><span>可打印</span><span>开源</span></p>
+</header>
+
+<main>
+  <section class="card" id="step-input">
+    <h2>输入要练的字</h2>
+    <textarea id="text" rows="2" maxlength="300" placeholder="比如这周的生字：秋 天 树 叶 飞（一次最多 60 个字，可以连着写成词语，拼音更准）"></textarea>
+    <div class="examples" id="examples">
+      <span>试试：</span>
+      <button class="link" data-t="一二三四五六七八九十">一到十</button>
+      <button class="link" data-t="春天来了 小草 花朵">春天来了</button>
+      <button class="link" data-t="山水日月 天地人">山水日月</button>
+    </div>
+    <button class="primary" id="go">生成笔顺和字帖</button>
+    <p class="status" id="status"></p>
+  </section>
+
+  <section class="card" id="strokes" hidden>
+    <div class="h2row"><h2>笔顺动画 <small>点一个字放大看</small></h2><button class="mini" id="replay">▶ 全部重播</button></div>
+    <div class="cards" id="cards"></div>
+    <p class="hint" id="skipped" hidden></p>
+  </section>
+
+  <section class="card" id="detail" hidden>
+    <div class="big-wrap">
+      <div class="big tian" id="big"></div>
+      <div class="big-info">
+        <b id="bigChar"></b>
+        <button class="py" id="bigPy" title="多音字点一下换读音"></button>
+        <span id="bigCount"></span>
+      </div>
+    </div>
+    <div class="chips center" id="modes">
+      <button class="chip on" data-m="anim">▶ 笔顺动画</button>
+      <button class="chip" data-m="quiz">✍️ 描一描</button>
+    </div>
+    <p class="hint" id="modeHint">红色是当前这一笔</p>
+    <p class="warn" id="warn" hidden>⚠️ 这个字的笔顺数据可能有误，请以课本为准</p>
+    <canvas class="strip" id="strip"></canvas>
+  </section>
+
+  <section class="card" id="sheet" hidden>
+    <h2>字帖设置</h2>
+    <div class="opt"><span>格子</span><div class="chips" id="grid">
+      <button class="chip on" data-v="tian">田字格</button>
+      <button class="chip" data-v="mi">米字格</button>
+      <button class="chip" data-v="fang">方格</button>
+    </div></div>
+    <div class="opt"><span>描红</span><div class="chips" id="trace">
+      <button class="chip" data-v="2">2 个</button>
+      <button class="chip on" data-v="4">4 个</button>
+      <button class="chip" data-v="10">整行</button>
+      <button class="chip" data-v="0">不描</button>
+    </div></div>
+    <div class="opt"><span>每字</span><div class="chips" id="rows">
+      <button class="chip on" data-v="1">1 行</button>
+      <button class="chip" data-v="2">2 行</button>
+      <button class="chip" data-v="3">3 行</button>
+    </div></div>
+    <div class="opt"><span>显示</span><div class="chips" id="show">
+      <button class="chip on" data-v="pinyin">拼音</button>
+      <button class="chip on" data-v="order">笔顺</button>
+    </div></div>
+    <div class="opt"><span>标题</span><input id="title" value="生字练习" maxlength="20"></div>
+    <div class="page-wrap" id="pageWrap"><canvas id="preview"></canvas></div>
+    <div class="pager" id="pager" hidden><button class="mini" id="prev">‹ 上一页</button><span id="pageNo"></span><button class="mini" id="next">下一页 ›</button></div>
+    <button class="primary" id="pdf">下载 PDF（A4 直接打印）</button>
+    <p class="pdf-out" id="pdfOut" hidden></p>
+    <a class="btn save" id="png" download>保存这一页图片</a>
+    <p class="hint">在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」。打印时选 A4、「实际大小」或 100%。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>笔顺准吗？</summary><p>笔画数据来自开源项目 Make Me a Hanzi（Hanzi Writer 用的就是它），有 9000 多个常用简体、繁体字。我们用程序把 3500 个常用字的笔画顺序和《现代汉语通用字笔顺规范》逐个比对，可疑的再人工看，修正了「冉、盖、肠、滚、寝、衙」6 个字；「兜、虐、翰、髓」4 个字有疑问、没找到可靠依据，页面上会提示。和课本不一样的地方请以课本为准，也欢迎告诉我们。</p></details>
+    <details><summary>多音字的拼音不对怎么办？</summary><p>连着写成词语（比如「长大」「银行」），拼音会按词语来定；还不对的话，点字下面的拼音就能换读音。</p></details>
+    <details><summary>怎么打印？</summary><p>点「下载 PDF」，电脑上直接打开打印；手机上用 WPS、打印机 App 打开，或者把 PDF 发给打印店。打印时纸张选 A4、缩放选「实际大小」或 100%，格子是 1.8 厘米。</p></details>
+    <details><summary>描一描怎么用？</summary><p>选一个字，点「描一描」，用手指按笔顺在格子里写。写对了这一笔会留下，写错了不算，连错两次会提示下一笔从哪里起笔。</p></details>
+    <details><summary>输入的字会上传吗？</summary><p>不会。笔顺动画、字帖排版和 PDF 都在你的手机浏览器里生成，页面只会下载每个字的笔画数据（每个字几 KB）。</p></details>
+    <details><summary>为什么有的字没有？</summary><p>数据里没有的生僻字、标点、字母会自动跳过，页面上会列出来。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>笔顺动画和描一描基于开源项目 <a href="https://github.com/chanind/hanzi-writer" target="_blank" rel="noopener">Hanzi Writer</a>（MIT），拼音用 <a href="https://github.com/zh-lx/pinyin-pro" target="_blank" rel="noopener">pinyin-pro</a>（MIT）。</p>
+  <p>笔画数据来自 <a href="https://github.com/skishore/makemeahanzi" target="_blank" rel="noopener">Make Me a Hanzi</a>，源自文鼎科技（Arphic）的 PL 楷体字体，按 <a href="../vendor/hanzi-writer-data/ARPHICPL.TXT" target="_blank" rel="noopener">Arphic Public License</a> 发布；本站修正了 6 个字的笔顺（<a href="../vendor/hanzi-writer-data/NOTICE.md" target="_blank" rel="noopener">改动说明</a>）。</p>
+  <p>字帖排版和界面由开源宝藏工具箱制作。</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../vendor/hanzi-writer/hanzi-writer.min.js"></script>
+<script src="../vendor/pinyin-pro/pinyin-pro.min.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

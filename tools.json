@@ -58,5 +58,20 @@
       "自媒体",
       "字幕"
     ]
+  },
+  {
+    "day": 5,
+    "slug": "zitie",
+    "name": "汉字笔顺字帖",
+    "pain": "别再自己画田字格、一个个写示范",
+    "desc": "输入这周的生字：每个字的笔顺一笔一画动画演示，孩子能在手机上跟着描；自动排好带拼音、笔顺、描红的田字格 / 米字格字帖，下载 A4 PDF 直接打印。",
+    "source": "Hanzi Writer + pinyin-pro",
+    "source_url": "https://github.com/chanind/hanzi-writer",
+    "license": "MIT / Arphic Public License（笔画数据）",
+    "tags": [
+      "学习",
+      "小学",
+      "宝妈"
+    ]
   }
 ]
