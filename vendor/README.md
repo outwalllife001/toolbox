@@ -1,7 +1,7 @@
 # 第三方运行时和数据（除表里注明的改动外，原样拷贝）
 | 目录 | 包 | 版本 | 许可证 |
 |---|---|---|---|
-| `ort/` | [onnxruntime-web](https://github.com/microsoft/onnxruntime) | 1.22.0 | MIT |
+| `ort/` | [onnxruntime-web](https://github.com/microsoft/onnxruntime)（`ort.wasm.min.mjs` + `ort-wasm-simd-threaded.*`；第 6 期加了 WebGPU 版 `ort.webgpu.min.mjs` + `ort-wasm-simd-threaded.jsep.*`） | 1.22.0 | MIT |
 | `mediapipe/` | [@mediapipe/tasks-vision](https://github.com/google-ai-edge/mediapipe) | 0.10.21 | Apache-2.0 |
 | `opencv/` | [OpenCV.js](https://github.com/opencv/opencv)（取自 npm 包 jscanify@1.4.3 的 `src/opencv.js`） | 4.7.0 | Apache-2.0 |
 | `jscanify/` | [jscanify](https://github.com/puffinsoft/jscanify)（npm 包 jscanify@1.4.3 的 `src/jscanify.js`） | 1.4.3 | MIT |

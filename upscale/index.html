@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>模糊照片变高清 · AI 放大 4 倍 · 开源宝藏工具箱</title>
+<meta name="description" content="小图、被压缩糊了的照片、截图，AI 放大 2 倍 / 4 倍并补出细节，拖动中间的线前后对比。照片只在你的手机里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>模糊照片变高清</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+</header>
+
+<main>
+  <input type="file" id="file" accept="image/*" hidden>
+  <section class="card" id="main">
+    <div class="cmp" id="cmp">
+      <label class="drop-empty" id="dropEmpty" for="file">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="6"/><path d="M6 31l10-9 8 7 6-5 12 10"/><circle cx="31" cy="18" r="3.5"/></svg>
+        <b>上传一张模糊 / 太小的照片</b>
+        <small>小图、被压缩糊了的图、截图、老照片翻拍都可以</small>
+      </label>
+      <div class="stage" id="stage" hidden>
+        <img id="before" alt="原图">
+        <canvas id="after"></canvas>
+      </div>
+      <div class="split" id="split" hidden><i></i><b>‹ ›</b></div>
+      <span class="lbl l" id="lblL" hidden>原图</span><span class="lbl r" id="lblR" hidden>高清</span>
+      <span class="zoomtip" id="zoomTip" hidden>放大 3 倍 · 拖动查看 · 双击还原</span>
+    </div>
+    <p class="meta" id="srcMeta" hidden></p>
+
+    <div id="setup">
+      <h2>放大倍数</h2>
+      <div class="chips" id="scales">
+        <button class="chip" data-s="2">2 倍<small id="s2">—</small></button>
+        <button class="chip on" data-s="4">4 倍<small id="s4">—</small></button>
+      </div>
+      <button class="primary" id="go" disabled>一键变高清</button>
+      <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+      <p class="status" id="status">正在准备 AI 模型…</p>
+    </div>
+
+    <div id="done" hidden>
+      <div class="view-tools">
+        <button class="mini" id="zoom">🔍 放大看细节</button>
+      </div>
+      <p class="meta" id="meta"></p>
+      <a class="primary save" id="dl" download>保存高清图</a>
+      <button class="btn" id="again">换一张</button>
+      <p class="hint">在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」再保存。</p>
+    </div>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>照片会上传吗？</summary><p>不会。放大全部在你的手机浏览器里完成，页面没有任何上传接口。</p></details>
+    <details><summary>什么样的照片效果好？</summary><p>尺寸小的图、在微信里转了几次被压缩糊的图、截图、旧手机拍的照片、老照片翻拍、动漫和插画。放大后边缘更清楚、噪点和压缩出来的色块会被去掉。</p></details>
+    <details><summary>哪些照片救不回来？</summary><p>拍的时候就没对上焦、手抖拍虚的照片，AI 补不回来；合影里人脸只有几个像素大的，放大后脸可能被「画」得不像本人。AI 补出来的细节是推测的，证件、合同、证据这类要求原样的图片不要用它处理。</p></details>
+    <details><summary>为什么有的手机很快、有的很慢？</summary><p>浏览器支持 GPU 加速（WebGPU）时快得多：电脑上一张 300×400 的小图不到 1 秒。不支持的会改用 CPU 慢慢算，电脑上同一张图要 20 秒左右，手机上可能要一两分钟，所以 CPU 模式下会先把图缩到约 480×480 以内再放大。算完后图片下面会写用的是「GPU 加速」还是「CPU 模式」。</p></details>
+    <details><summary>第一次打开为什么要等？</summary><p>要下载约 5–8MB 的 AI 模型和运行库（只下载一次，之后走缓存）。</p></details>
+    <details><summary>能放多大？</summary><p>原图超过约 100 万像素（1024×1024）会先缩小再放大，最终最大约 4096 像素宽，手机内存放得下。本来就很大的照片，放大意义不大。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>放大模型来自开源项目 <a href="https://github.com/xinntao/Real-ESRGAN" target="_blank" rel="noopener">Real-ESRGAN</a>（BSD-3-Clause，© 2021 Xintao Wang）的 realesr-general-x4v3，按原版默认的降噪强度 0.5 合并了两套权重，为网页转换了格式。</p>
+  <p><a href="../models/LICENSE-Real-ESRGAN.txt" target="_blank" rel="noopener">Real-ESRGAN 许可证全文</a> · 推理：ONNX Runtime Web（MIT）· 浏览器端移植与界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

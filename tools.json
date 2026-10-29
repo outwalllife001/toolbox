@@ -73,5 +73,20 @@
       "小学",
       "宝妈"
     ]
+  },
+  {
+    "day": 6,
+    "slug": "upscale",
+    "name": "模糊照片变高清",
+    "pain": "别再花钱找人把模糊照片修清楚",
+    "desc": "小图、被压缩糊了的照片、截图，AI 放大 2 倍 / 4 倍并补出细节，拖动中间的线前后对比，保存高清图。",
+    "source": "Real-ESRGAN",
+    "source_url": "https://github.com/xinntao/Real-ESRGAN",
+    "license": "BSD-3-Clause",
+    "tags": [
+      "图片",
+      "老照片",
+      "高清"
+    ]
   }
 ]
