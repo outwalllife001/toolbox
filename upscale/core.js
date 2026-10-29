@@ -3,7 +3,7 @@
 // 流程：读图 → 太大先缩（见 plan）→ Worker 里分块跑 ×4 网络 → 拼回整张 → 要 2 倍就再缩一半（原版也是先 ×4 再按 outscale 缩）
 // 模型：原版默认 denoise_strength=0.5，把两套权重各取一半插好了（days/day06-upscale/make_model.py）
 const BASE = new URL('..', import.meta.url).href;
-// webgpu16：整网 fp16，给支持 shader-f16 的 GPU（Mac 上比 fp32 快约 7 倍）；其余用 fp32 计算的版本
+// webgpu16：整网 fp16，给支持 shader-f16 的 GPU（Mac 上比 fp32 快 4–7 倍）；其余用 fp32 计算的版本
 export const MODEL_URLS = { wasm: BASE + 'models/realesr_general_x4v3.onnx', webgpu: BASE + 'models/realesr_general_x4v3.onnx', webgpu16: BASE + 'models/realesr_general_x4v3_fp16.onnx' };
 // 4 倍中间结果的面积上限：iPhone 上单个 canvas 最多约 1677 万像素（4096×4096）
 export const MAX_BIG = 4096 * 4096;

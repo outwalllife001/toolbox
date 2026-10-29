@@ -18,10 +18,12 @@ const sec = ms => (ms / 1000).toFixed(ms < 10000 ? 1 : 0);
 
 // ---------- 模型 ----------
 const want = Q.get('backend') || await core.pickBackend();
+// 网址里指定了 ?backend=wasm 就别说「不支持 GPU」（录视频时是故意用 CPU）
+const CPU_HINT = Q.get('backend') ? '' : '这台设备不支持 GPU 加速，会用 CPU 慢慢算';
 core.load(want, p => { if (p < 1) setStatus(`正在加载 AI 模型 ${Math.round(p * 100)}%（只需加载一次）`); })
   .then(be => {
     st.be = be; st.ready = true;
-    setStatus(st.img ? (be === 'wasm' ? '这台设备不支持 GPU 加速，会用 CPU 慢慢算' : '') : '先上传一张照片');
+    setStatus(st.img ? (be === 'wasm' ? CPU_HINT : '') : '先上传一张照片');
     refreshGo(); scaleInfo();
   })
   .catch(e => setStatus('模型加载失败：' + e.message + '，请刷新重试'));
@@ -44,7 +46,7 @@ $('file').addEventListener('change', async e => {
   showDone(false);
   $('srcMeta').hidden = false; $('srcMeta').textContent = `原图 ${w0}×${h0}`;
   layout(); scaleInfo();
-  if (st.ready) setStatus(st.be === 'wasm' ? '这台设备不支持 GPU 加速，会用 CPU 慢慢算' : '');
+  if (st.ready) setStatus(st.be === 'wasm' ? CPU_HINT : '');
   refreshGo();
 });
 
