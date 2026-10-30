@@ -88,5 +88,20 @@
       "老照片",
       "高清"
     ]
+  },
+  {
+    "day": 7,
+    "slug": "sign",
+    "name": "手机签名盖到 PDF",
+    "pain": "别再为了签个字打印、签完再扫描",
+    "desc": "上传要签的合同 / 表格 PDF（拍的照片也行），手指写签名，自动找到「签字」「日期」的位置盖上去，导出签好的 PDF，原来的文字不变糊。",
+    "source": "signature_pad + pdf-lib + PDF.js",
+    "source_url": "https://github.com/szimek/signature_pad",
+    "license": "MIT / Apache-2.0",
+    "tags": [
+      "PDF",
+      "办公",
+      "租房"
+    ]
   }
 ]

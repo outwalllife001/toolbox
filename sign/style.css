@@ -1,0 +1,122 @@
+:root {
+  --bg: #f3f5f9; --card: #fff; --ink: #141a26; --sub: #667085; --line: #e4e8f0;
+  --pri: #2f6bff; --pri-ink: #fff; --pri-soft: #e8efff; --ok: #12b76a;
+  --radius: 18px;
+  color-scheme: light;
+}
+[hidden] { display: none !important; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+.top { padding: 18px 16px 6px; text-align: center; }
+.brand { display: inline-block; font-size: 12px; color: var(--sub); text-decoration: none; letter-spacing: .08em; }
+h1 { margin: 2px 0 6px; font-size: 26px; letter-spacing: .02em; }
+.tag { margin: 0; display: flex; gap: 6px; justify-content: center; }
+.tag span { font-size: 12px; padding: 2px 10px; border-radius: 99px; background: var(--pri-soft); color: var(--pri); font-weight: 600; }
+main { max-width: 480px; margin: 0 auto; padding: 8px 12px 16px; }
+.card { background: var(--card); border-radius: var(--radius); padding: 14px; margin: 10px 0; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+h2 { font-size: 14px; margin: 2px 0 8px; color: var(--sub); font-weight: 600; }
+h2 + .swatches, .chips + h2 { margin-top: 12px; }
+
+.drop-empty b { font-size: 16px; }
+.drop-empty small { color: var(--sub); font-size: 12px; }
+
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1.5px solid var(--line); background: #fff; color: var(--ink); border-radius: 12px; padding: 6px 12px; font: inherit; font-size: 14px; text-align: left; line-height: 1.25; }
+.chip small { display: block; font-size: 11px; color: var(--sub); }
+.chip.on { border-color: var(--pri); background: var(--pri-soft); color: var(--pri); font-weight: 600; }
+.chip.on small { color: var(--pri); }
+
+
+.primary { display: block; width: 100%; margin-top: 12px; border: 0; border-radius: 14px; padding: 14px; font: inherit; font-size: 17px; font-weight: 700; color: var(--pri-ink); background: var(--pri); box-shadow: 0 6px 16px rgba(47,107,255,.28); text-align: center; text-decoration: none; cursor: pointer; }
+.primary:disabled { opacity: .45; box-shadow: none; }
+.status { margin: 8px 0 0; text-align: center; font-size: 13px; color: var(--sub); min-height: 20px; }
+.status.done { color: var(--ok); font-weight: 600; }
+
+.mini { border: 1.5px solid var(--line); background: #fff; color: var(--ink); border-radius: 99px; padding: 5px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.mini.on { border-color: var(--pri); color: var(--pri); background: var(--pri-soft); }
+.meta { text-align: center; font-size: 13px; color: var(--sub); margin: 10px 0 0; }
+.btn { display: block; width: 100%; text-align: center; text-decoration: none; border: 0; border-radius: 12px; padding: 11px 8px; margin-top: 10px; font: inherit; font-size: 15px; font-weight: 600; color: var(--pri); background: var(--pri-soft); cursor: pointer; }
+.hint { font-size: 12px; color: var(--sub); text-align: center; margin: 12px 0 0; }
+
+.faq details { border-top: 1px solid var(--line); padding: 10px 0; }
+.status.err { color: #e5484d; }
+body.has-doc { padding-bottom: 76px; }
+body.lock { overflow: hidden; }
+.drop-empty { display: grid; justify-items: center; gap: 4px; padding: 34px 16px; text-align: center; cursor: pointer; border: 2px dashed #c9d3e6; border-radius: 14px; background: #fafbfe; }
+.drop-empty svg { width: 44px; height: 44px; fill: none; stroke: var(--pri); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+#docInfo .meta { margin: 0 0 6px; }
+.found { margin: 0 0 10px; font-size: 13px; text-align: center; color: var(--ink); background: #fff8e1; border-radius: 10px; padding: 6px 10px; }
+.found b { color: #c2410c; }
+
+/* 页面：PDF.js 画在 canvas 上，签名 / 日期是上面一层可拖动的图片（位置用百分比，换屏幕宽度不跑偏） */
+.pg { position: relative; width: 100%; background: #fff; box-shadow: 0 1px 4px rgba(16,24,40,.18); margin: 0 0 10px; }
+.pg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.pg .layer { position: absolute; inset: 0; }
+.pno { position: absolute; right: 6px; bottom: 6px; font-size: 11px; color: #fff; background: rgba(20,26,38,.5); border-radius: 99px; padding: 0 7px; pointer-events: none; }
+.it { position: absolute; touch-action: none; user-select: none; -webkit-user-select: none; cursor: move; }
+.it img { display: block; width: 100%; height: 100%; pointer-events: none; }
+.it.sel { outline: 1.5px dashed var(--pri); outline-offset: 2px; background: rgba(47,107,255,.06); }
+.it .del, .it .rz { display: none; position: absolute; width: 22px; height: 22px; border-radius: 50%; }
+.it.sel .del, .it.sel .rz { display: block; }
+.it .del { right: -13px; top: -13px; background: #e5484d; color: #fff; font: 700 16px/21px -apple-system, sans-serif; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,.3); cursor: pointer; }
+.it .rz { right: -13px; bottom: -13px; background: #fff; border: 3px solid var(--pri); box-shadow: 0 1px 4px rgba(0,0,0,.3); cursor: nwse-resize; }
+.it .del::after, .it .rz::after { content: ''; position: absolute; inset: -9px; }
+.it.pop { animation: pop .35s ease; }
+@keyframes pop { from { transform: scale(1.4); opacity: .2; } to { transform: none; opacity: 1; } }
+
+/* 底部工具条 */
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; gap: 8px; padding: 9px 12px calc(9px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.96); box-shadow: 0 -2px 12px rgba(16,24,40,.1); max-width: 480px; margin: 0 auto; }
+.dk { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; border: 0; border-radius: 12px; padding: 11px 4px; font: inherit; font-size: 15px; font-weight: 700; color: var(--pri); background: var(--pri-soft); cursor: pointer; white-space: nowrap; }
+.dk svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.dk.go { flex: 1.5; color: #fff; background: #98a2b3; }
+.dk.go.ready { background: var(--pri); box-shadow: 0 4px 12px rgba(47,107,255,.3); }
+
+/* 放置提示条 */
+.place { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; max-width: 480px; margin: 0 auto; }
+.place-in { background: #141a26; color: #fff; border-radius: 16px 16px 0 0; padding: 12px 12px calc(12px + env(safe-area-inset-bottom)); position: relative; box-shadow: 0 -4px 18px rgba(0,0,0,.25); }
+.place p { margin: 0 64px 0 2px; font-size: 14px; font-weight: 600; }
+.place .x { position: absolute; right: 10px; top: 9px; border: 0; background: rgba(255,255,255,.14); color: #fff; border-radius: 99px; padding: 3px 12px; font: inherit; font-size: 13px; }
+.spots { display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+.spots::-webkit-scrollbar { display: none; }
+.spot { flex: none; border: 0; border-radius: 12px; padding: 8px 12px; font: inherit; font-size: 15px; font-weight: 700; color: #141a26; background: #ffd84d; text-align: left; line-height: 1.2; cursor: pointer; }
+.spot small { display: block; font-size: 11px; font-weight: 600; color: #6b5300; }
+.spot.done { background: rgba(255,255,255,.2); color: #fff; }
+.spot.done small { color: #ddd; }
+
+/* 底部弹出的面板 */
+.sheet { position: fixed; inset: 0; z-index: 30; background: rgba(10,14,24,.45); display: flex; align-items: flex-end; justify-content: center; }
+.sheet-in { width: 100%; max-width: 480px; max-height: 100%; overflow-y: auto; background: #fff; border-radius: 18px 18px 0 0; padding: 12px 14px calc(14px + env(safe-area-inset-bottom)); animation: up .25s ease; }
+@keyframes up { from { transform: translateY(40px); opacity: .3; } to { transform: none; opacity: 1; } }
+.sheet-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.sheet-hd b { font-size: 17px; }
+.sheet-hd .x { border: 0; background: #f2f4f7; width: 30px; height: 30px; border-radius: 50%; font-size: 20px; line-height: 28px; color: var(--sub); }
+.pad { position: relative; height: 180px; border-radius: 14px; background: #fafbfe; border: 1.5px solid var(--line); overflow: hidden; touch-action: none; }
+.pad canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; z-index: 1; }
+.pad-line { position: absolute; left: 18px; right: 18px; bottom: 44px; border-bottom: 1.5px dashed #c9d3e6; }
+.pad-tip { position: absolute; left: 0; right: 0; top: 64px; text-align: center; color: #98a2b3; font-size: 15px; pointer-events: none; }
+.pad.shake { animation: shake .35s; }
+@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.pad-tools { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.seg { display: flex; gap: 4px; background: #f2f4f7; border-radius: 99px; padding: 3px; }
+.seg button { border: 0; background: transparent; border-radius: 99px; font: inherit; font-size: 13px; font-weight: 600; color: var(--sub); padding: 3px 9px; }
+.seg button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.seg .c { width: 28px; height: 26px; padding: 0; position: relative; }
+.seg .c::after { content: ''; position: absolute; left: 7px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--c); }
+.pad-tools .mini { margin-left: auto; padding: 4px 10px; }
+.pad-tools .mini + .mini { margin-left: 0; }
+.sheet-more { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+.sheet-more .mini { display: inline-block; }
+#savedWrap h2 { margin-top: 14px; }
+#savedWrap h2 small { font-weight: 400; }
+.saved { display: flex; gap: 8px; overflow-x: auto; padding: 8px 6px 4px; }
+.sv { position: relative; flex: none; width: 96px; height: 48px; border: 1.5px solid var(--line); border-radius: 10px; background: #fff; display: grid; place-items: center; cursor: pointer; }
+.sv img { max-width: 86px; max-height: 40px; }
+.sv .del { position: absolute; right: -7px; top: -7px; width: 18px; height: 18px; border-radius: 50%; background: #98a2b3; color: #fff; font: 700 13px/18px -apple-system, sans-serif; text-align: center; }
+.out-prev { margin-top: 8px; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 6px rgba(16,24,40,.25); max-height: 46vh; overflow-y: auto; }
+.out-prev canvas { display: block; width: 100%; }
+.save { margin-top: 12px; }

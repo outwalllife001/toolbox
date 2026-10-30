@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>手机签名盖到 PDF · 不用打印扫描 · 开源宝藏工具箱</title>
+<meta name="description" content="合同、协议、表格要签字？手机上手指写签名，自动找到签字处盖上去，导出签好的 PDF。原文字不变糊，文件只在你的手机里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>手机签名盖到 PDF</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+</header>
+
+<main>
+  <input type="file" id="file" accept="application/pdf,.pdf,image/*" multiple hidden>
+  <section class="card" id="main">
+    <label class="drop-empty" id="dropEmpty" for="file">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 5h17l9 9v29H12z"/><path d="M29 5v9h9"/><path d="M17 33c3-5 5-6 6-3s2 3 4 0 3-2 4 0 2 1 3-1"/></svg>
+      <b>上传要签字的 PDF</b>
+      <small>合同、协议、入职表、报名表… 拍的照片、截图也行</small>
+    </label>
+    <div id="docInfo" hidden>
+      <p class="meta" id="docMeta"></p>
+      <p class="found" id="found" hidden></p>
+    </div>
+    <div id="doc"></div>
+    <p class="status" id="status"></p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>文件会上传吗？</summary><p>不会。PDF 的打开、签名、导出全部在你的手机浏览器里完成，页面没有任何上传接口。签名只存在这台设备的浏览器里（「常用签名」），可以随时删掉。</p></details>
+    <details><summary>导出的 PDF 会变糊吗？</summary><p>不会。签名是作为一张透明图片「盖」在原来的页面上，原来的文字、表格、排版一点不动，文字照样能选中复制。只有加了密码保护的 PDF 例外：这种文件改不了原件，只能每页转成图片再合成，页面上会提示。</p></details>
+    <details><summary>怎么知道签在哪？</summary><p>文字版的 PDF（Word、WPS 导出的那种），网页会自动找「签字」「签名」「盖章」「日期」后面的空位，点一下就放过去。拍照的、扫描的文件找不到文字，点一下页面上要签的地方就行。放好以后可以用手指拖动位置，拖右下角的圆点改大小。</p></details>
+    <details><summary>这样签的字有法律效力吗？</summary><p>这是把你的手写签名图片放进 PDF，相当于「打印出来签好、扫描发回去」的电子版，适合对方接受这种方式的场合（租房、入职材料、报名表、内部审批等）。它不是《电子签名法》里经过 CA 认证的「可靠电子签名」；重要合同请按对方要求，用指定的电子签约平台或当面签字。</p></details>
+    <details><summary>纸上已经签好的名字能用吗？</summary><p>能。在「写签名」里点「📷 拍纸上的签名」，拍一张白纸上的签名，网页会去掉纸的底色和阴影，变成透明背景的签名。</p></details>
+    <details><summary>能只要一张透明背景的签名图片吗？</summary><p>能。写好签名后点「保存签名图片」，得到透明背景的 PNG，可以插到 Word、WPS 里用。</p></details>
+  </section>
+</main>
+
+<nav class="dock" id="dock" hidden>
+  <button class="dk" id="btnSign"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></svg>写签名</button>
+  <button class="dk" id="btnDate"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>加日期</button>
+  <button class="dk go" id="btnExport">导出签好的 PDF</button>
+</nav>
+
+<div class="place" id="place" hidden>
+  <div class="place-in">
+    <p id="placeTip">点一下页面上要签字的位置</p>
+    <div class="spots" id="spots"></div>
+    <button class="x" id="placeCancel" aria-label="取消">取消</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-in">
+    <div class="sheet-hd"><b>写下你的签名</b><button class="x" id="sheetClose" aria-label="关闭">×</button></div>
+    <div class="pad" id="pad"><canvas id="padCanvas"></canvas><span class="pad-tip" id="padTip">在这里用手指写，写大一点</span><i class="pad-line"></i></div>
+    <div class="pad-tools">
+      <div class="seg" id="colors"><button class="c on" data-c="#111827" style="--c:#111827" aria-label="黑色"></button><button class="c" data-c="#1d3fbb" style="--c:#1d3fbb" aria-label="蓝色"></button></div>
+      <div class="seg" id="widths"><button class="w" data-w="0.8">细</button><button class="w on" data-w="1.15">中</button><button class="w" data-w="1.6">粗</button></div>
+      <button class="mini" id="undo">撤销</button><button class="mini" id="clear">清空</button>
+    </div>
+    <button class="primary" id="useSig">用这个签名</button>
+    <div class="sheet-more">
+      <label class="mini" for="inkFile">📷 拍纸上的签名</label>
+      <button class="mini" id="savePng">保存签名图片</button>
+      <input type="file" id="inkFile" accept="image/*" hidden>
+    </div>
+    <div id="savedWrap" hidden><h2>常用签名 <small>（只存在这台设备上）</small></h2><div class="saved" id="saved"></div></div>
+  </div>
+</div>
+
+<div class="sheet" id="outSheet" hidden>
+  <div class="sheet-in">
+    <div class="sheet-hd"><b id="outTitle">签好了</b><button class="x" id="outClose" aria-label="关闭">×</button></div>
+    <p class="meta" id="outMeta"></p>
+    <div class="out-prev"><canvas id="outPrev"></canvas></div>
+    <a class="primary save" id="dlPdf" download>保存 PDF</a>
+    <button class="btn" id="dlImg">存成图片（签字的那页）</button>
+    <p class="hint">在微信 / 抖音里保存不了？点右上角「…」选「在浏览器打开」再保存。</p>
+  </div>
+</div>
+
+<footer>
+  <p>手写签名基于开源项目 <a href="https://github.com/szimek/signature_pad" target="_blank" rel="noopener">signature_pad</a>（MIT），PDF 写入用 <a href="https://github.com/Hopding/pdf-lib" target="_blank" rel="noopener">pdf-lib</a>（MIT），显示用 Mozilla <a href="https://github.com/mozilla/pdf.js" target="_blank" rel="noopener">PDF.js</a>（Apache-2.0）。</p>
+  <p><a href="../vendor/README.md" target="_blank" rel="noopener">第三方组件与许可证</a> · 浏览器端界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
