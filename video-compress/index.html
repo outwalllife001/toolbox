@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>视频压缩 · 转 GIF · 提取声音 · 开源宝藏工具箱</title>
+<meta name="description" content="视频太大发不出去、传不上去？手机上一键压小，画质几乎不变；也能截一段转成 GIF、把声音提取成 M4A。视频只在你的手机里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>视频压缩 · 转 GIF</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+</header>
+
+<main>
+  <input type="file" id="file" accept="video/*,.mov,.mp4,.m4v,.webm,.mkv" hidden>
+  <section class="card" id="main">
+    <label class="drop-empty" id="dropEmpty" for="file">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="11" width="28" height="26" rx="5"/><path d="M33 20l10-6v20l-10-6z"/><path d="M14 24h10M19 19v10"/></svg>
+      <b>选一个视频</b>
+      <small>手机相册里的视频、MOV、MP4 都行</small>
+    </label>
+    <div id="loaded" hidden>
+      <div class="vwrap"><video id="prev" playsinline controls preload="metadata" muted></video></div>
+      <p class="meta" id="meta"></p>
+      <div class="tabs" id="tabs">
+        <button class="on" data-t="zip">压缩</button><button data-t="gif">转 GIF</button><button data-t="aud">提取声音</button>
+      </div>
+
+      <div class="panel" id="pZip">
+        <h2>压到多大</h2>
+        <div class="opts" id="opts"></div>
+        <div class="target" id="targetRow" hidden>
+          <span>压到</span><input id="targetMB" type="number" inputmode="decimal" min="1" step="1" value="20"><span>MB 以内</span>
+        </div>
+        <p class="plan" id="planTxt"></p>
+        <button class="primary" id="go">开始压缩</button>
+      </div>
+
+      <div class="panel" id="pGif" hidden>
+        <h2>从第几秒开始 <b id="gStartTxt">0 秒</b></h2>
+        <input type="range" id="gStart" min="0" max="10" step="0.1" value="0">
+        <h2>截多长</h2>
+        <div class="chips" id="gDur"><button class="chip" data-v="2">2 秒</button><button class="chip on" data-v="3">3 秒</button><button class="chip" data-v="5">5 秒</button><button class="chip" data-v="8">8 秒</button></div>
+        <h2>多大</h2>
+        <div class="chips" id="gW"><button class="chip" data-v="240">小<small>表情包</small></button><button class="chip on" data-v="320">中<small>聊天</small></button><button class="chip" data-v="480">大<small>清楚</small></button></div>
+        <p class="plan" id="gPlan"></p>
+        <button class="primary" id="goGif">生成 GIF</button>
+      </div>
+
+      <div class="panel" id="pAud" hidden>
+        <p class="plan" id="aPlan"></p>
+        <button class="primary" id="goAud">提取声音（M4A）</button>
+      </div>
+
+      <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+      <p class="status" id="status"></p>
+      <label class="again" for="file">换一个视频</label>
+    </div>
+  </section>
+
+  <section class="card result" id="result" hidden>
+    <div class="sizes" id="sizes"></div>
+    <div class="cmp" id="cmp" hidden>
+      <canvas id="cB"></canvas><div class="cmp-a" id="cmpA"><canvas id="cA"></canvas></div>
+      <i class="cmp-line" id="cmpLine"></i><span class="lb l">原视频</span><span class="lb r">压缩后</span>
+    </div>
+    <p class="cmp-tip" id="cmpTip" hidden>左右拖动中间的线，对比同一帧的画质</p>
+    <img class="gif" id="gifOut" alt="生成的 GIF" hidden>
+    <audio id="audOut" controls hidden></audio>
+    <a class="primary save" id="dl" download>保存视频</a>
+    <p class="hint">在微信 / 抖音里保存不了？点右上角「…」选「在浏览器打开」再保存。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>视频会上传吗？</summary><p>不会。读取、压缩、转 GIF 全部在你的手机浏览器里完成（用的是手机自带的视频编码器），页面没有任何上传接口，断网也能用。</p></details>
+    <details><summary>压完画质会变差吗？</summary><p>会损失一点，但「标准」档在手机上看几乎分不出来：手机录像为了保险，码率给得很高，大部分空间是浪费的。压完可以拖动对比图看同一帧的细节；想更清楚就选「高清」，想更小就选「最小」或者直接填一个大小。</p></details>
+    <details><summary>「指定大小」准吗？</summary><p>按你填的大小算码率，压完如果超了会自动再压一次，结果一般比你填的略小。目标太小（比如 3 分钟压到 2MB）画面会很糊，页面会提醒。</p></details>
+    <details><summary>压出来是什么格式？</summary><p>MP4（H.264 画面 + AAC 声音），微信、苹果、安卓、电脑都能直接播放。iPhone 拍的 MOV、录屏的 WebM 也能这样转成 MP4。60 帧的视频会转成 30 帧，体积再小一半。</p></details>
+    <details><summary>打不开 / 压不了怎么办？</summary><p>需要浏览器支持视频编码（WebCodecs）：手机自带浏览器、Safari、电脑 Chrome / Edge 都可以。微信里打不开就点右上角「…」→「在浏览器打开」。iPhone 拍的 HEVC 视频在一部分安卓手机、Windows 电脑上解不开，换一台设备试试。</p></details>
+    <details><summary>GIF 为什么只能截几秒？</summary><p>GIF 是很老的格式，最多 256 种颜色、没有视频压缩，几秒钟就有几 MB。表情包、聊天用 2–3 秒、「中」号最合适；超过 8 秒建议直接发视频。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>视频读写基于开源项目 <a href="https://github.com/Vanilagy/mediabunny" target="_blank" rel="noopener">Mediabunny</a>（MPL-2.0，原样使用），GIF 编码用 <a href="https://github.com/mattdesl/gifenc" target="_blank" rel="noopener">gifenc</a>（MIT）。</p>
+  <p><a href="../vendor/README.md" target="_blank" rel="noopener">第三方组件与许可证</a> · 浏览器端界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -103,5 +103,20 @@
       "办公",
       "租房"
     ]
+  },
+  {
+    "day": 8,
+    "slug": "video-compress",
+    "name": "视频压缩 · 转 GIF",
+    "pain": "别再为视频太大发不出去发愁",
+    "desc": "手机拍的大视频一键压小，画质几乎不变，也能指定压到多少 MB 以内；截一段转成 GIF 表情包；把声音单独存成 M4A。",
+    "source": "Mediabunny + gifenc",
+    "source_url": "https://github.com/Vanilagy/mediabunny",
+    "license": "MPL-2.0 / MIT",
+    "tags": [
+      "视频",
+      "微信",
+      "自媒体"
+    ]
   }
 ]
