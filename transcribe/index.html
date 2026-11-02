@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>录音转文字 · 开源宝藏工具箱</title>
+<meta name="description" content="会议、上课、采访录音一键转成带标点、分好段的文字稿，点时间回听原声、直接改错字，导出 Word / TXT。录音只在你的设备里处理，不上传。">
+<script>
+// 多线程识别要「跨源隔离」，GitHub Pages 设不了响应头 → 第一次打开时装上 ../coi-sw.js 再自动刷新一次（只刷一次；不支持就单线程照样能用）
+(() => {
+  const q = new URLSearchParams(location.search);
+  if (self.crossOriginIsolated || q.get('threads') === '1' || !('serviceWorker' in navigator) || !self.isSecureContext) return;
+  const K = 'coi-reloaded';
+  const again = () => { if (sessionStorage.getItem(K)) return; sessionStorage.setItem(K, '1'); location.reload(); };
+  navigator.serviceWorker.register('../coi-sw.js', { scope: '../' }).then(reg => {
+    if (navigator.serviceWorker.controller || reg.active) again();
+    else navigator.serviceWorker.addEventListener('controllerchange', again, { once: true });
+  }).catch(() => {});
+})();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>录音转文字</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <input type="file" id="file" accept="audio/*,video/*,.m4a,.mp3,.wav,.aac,.ogg,.opus,.flac,.webm,.mp4,.mov,.m4v,.mkv" hidden>
+  <section class="card" id="step-upload">
+    <label class="drop" id="drop" for="file">
+      <span class="drop-empty">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="17" y="5" width="14" height="24" rx="7"/><path d="M10 22a14 14 0 0 0 28 0M24 36v7M16 43h16"/></svg>
+        <b>选一段录音</b>
+        <small>开会、上课、采访都行 · 手机录音机的 M4A / MP3 / WAV，视频也可以</small>
+      </span>
+    </label>
+    <div class="file" id="fileBox" hidden>
+      <div class="file-ic"><svg viewBox="0 0 24 24"><path d="M4 10v4M8 7v10M12 4v16M16 8v8M20 11v2"/></svg></div>
+      <div class="file-main"><b id="fileName"></b><small id="fileInfo"></small></div>
+      <button class="mini" id="change">换一个</button>
+    </div>
+    <div class="lang"><span>说的是</span><div class="chips" id="langs"></div></div>
+    <button class="primary" id="go" disabled>开始转写</button>
+    <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+    <p class="status" id="status"></p>
+    <p class="hint" id="keep" hidden>转写时别锁屏、别切到别的 App，手机上切走可能会暂停</p>
+  </section>
+
+  <section class="card result" id="result" hidden>
+    <div class="head"><h2>文字稿 <small id="stat"></small></h2></div>
+    <div class="player" id="player">
+      <button class="pp" id="pp" aria-label="播放"><svg viewBox="0 0 24 24"><path class="i-play" d="M8 5v14l11-7z"/><path class="i-pause" d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+      <div class="track" id="track"><i id="trackIn"></i></div>
+      <span class="time" id="time">00:00</span>
+    </div>
+    <div class="paras" id="paras"></div>
+    <p class="hint">点段落前的时间回听原声；点文字直接改</p>
+    <details class="replace" id="replaceBox">
+      <summary>查找替换（人名、术语听错了，一次改完）</summary>
+      <div class="rep-row"><input id="repFrom" placeholder="把"><span>换成</span><input id="repTo" placeholder="改成"><button class="mini" id="repGo">全部替换</button></div>
+      <p class="status" id="repMsg"></p>
+    </details>
+    <div class="opt-row"><span>导出时</span><div class="chips" id="timesOpt"></div></div>
+    <button class="primary" id="word">下载 Word 文档</button>
+    <div class="btns"><button class="btn" id="copy">复制全文</button><button class="btn" id="txt">下载 TXT</button></div>
+    <p class="hint">复制全文发给 AI 助手，就能帮你整理会议纪要、提炼待办。在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>录音会上传吗？</summary><p>不会。识别在你的浏览器里完成，页面没有任何上传接口，断网后（模型下载完）也能用。</p></details>
+    <details><summary>第一次为什么要等？</summary><p>要下载 AI 语音识别模型，约 160MB（只下载一次，存在浏览器里，之后打开直接用；用过本站「视频自动加字幕」的不用再下）。建议连 Wi-Fi。</p></details>
+    <details><summary>转一小时的录音要多久？</summary><p>我们实测（Mac 电脑、Chrome）：1 小时的录音 2 分 40 秒转完，1 分 41 秒的录音 4.5 秒。页面会自动开多线程；不支持多线程的浏览器（比如有的 App 内置浏览器）要慢 3 倍左右。手机要看性能，我们还没在真机上测过，长录音建议用电脑。转写时别锁屏、别切走。</p></details>
+    <details id="faqMember" hidden><summary>免费能转多长？</summary><p>每个录音免费转前 60 分钟，一般的会、一节课都够；开通工具箱会员不限时长。</p></details>
+    <details><summary>认得准吗？能分出是谁说的吗？</summary><p>普通话、粤语、英语、日语、韩语都能认，会自动加标点、按停顿分段（换人说话一般会另起一段）。说话清楚、离手机近最准；多人抢话、离得远、背景吵会错得多一些，人名、专业词、同音字可能写错，可以直接改或者用「查找替换」。暂时不能自动标出是谁说的。</p></details>
+    <details><summary>支持哪些格式？</summary><p>手机录音机常见的 M4A、MP3、WAV、AAC，以及 MP4 / MOV 等视频（只取声音）。微信语音、AMR 格式暂时打不开，可以先用录音机 App 导出成 M4A 或 MP3。</p></details>
+    <details><summary>可以录别人说话吗？</summary><p>请只转写你有权使用的录音：会议、上课、采访录音前最好先告知对方并取得同意，别用来侵犯别人的隐私。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>语音识别模型：<a href="https://github.com/QwenAudio/SenseVoice" target="_blank" rel="noopener">SenseVoiceSmall</a>（阿里巴巴 FunAudioLLM 团队开源，<a href="https://github.com/modelscope/FunASR/blob/main/MODEL_LICENSE" target="_blank" rel="noopener">FunASR 模型许可证</a>），使用 <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener">sherpa-onnx</a>（Apache-2.0）导出的 int8 版，推理流程移植自 sherpa-onnx。</p>
+  <p>推理：ONNX Runtime Web（MIT）· 读音频：<a href="https://github.com/Vanilagy/mediabunny" target="_blank" rel="noopener">Mediabunny</a>（MPL-2.0）· 浏览器端移植与界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

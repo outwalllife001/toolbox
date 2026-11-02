@@ -21,15 +21,21 @@
   .desc { margin: 4px 0 0; color: var(--sub); font-size: 14px; }
   .src { margin: 8px 0 0; font-size: 12px; color: var(--sub); }
   footer { text-align: center; color: var(--sub); font-size: 12px; padding: 0 16px 28px; }
+  .member-badge { margin-top: 10px; }
+  .member-badge button { border: 0; border-radius: 99px; padding: 5px 14px; font: inherit; font-size: 13px; font-weight: 700; color: #8a4b00; background: linear-gradient(135deg, #ffe7a3, #ffd166); cursor: pointer; }
+  .member-badge .mb-on { font-size: 13px; font-weight: 700; color: #8a6100; background: #fff4cc; border-radius: 99px; padding: 4px 12px; }
 </style>
 </head>
 <body>
 <header>
   <h1>开源宝藏工具箱</h1>
   <p>每天挖一个免费好用的开源工具 · 网页打开就能用 · 文件不上传</p>
+  <div class="member-badge" data-member-badge hidden></div>
 </header>
 <main id="list"></main>
 <footer>所有工具都基于开源项目制作，并注明原项目与许可证。</footer>
+<script src="config.js"></script>
+<script src="member.js"></script>
 <script>
 fetch('tools.json').then(r => r.json()).then(tools => {
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));

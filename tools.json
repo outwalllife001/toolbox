@@ -118,5 +118,20 @@
       "微信",
       "自媒体"
     ]
+  },
+  {
+    "day": 9,
+    "slug": "transcribe",
+    "name": "录音转文字",
+    "pain": "别再边听录音边打字整理纪要",
+    "desc": "会议、上课、采访录音一键转成带标点、分好段的文字稿；点时间回听原声，直接改错字、批量替换，导出 Word / TXT。电脑上 1 小时录音约 3 分钟转完。",
+    "source": "SenseVoice + sherpa-onnx",
+    "source_url": "https://github.com/QwenAudio/SenseVoice",
+    "license": "MIT / FunASR 模型许可证 / Apache-2.0",
+    "tags": [
+      "音频",
+      "办公",
+      "学习"
+    ]
   }
 ]
