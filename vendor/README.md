@@ -12,6 +12,7 @@
 | `hanzi-writer-data/` | [hanzi-writer-data](https://github.com/chanind/hanzi-writer-data)（数据来自 [Make Me a Hanzi](https://github.com/skishore/makemeahanzi)）。用 `days/day05-zitie/make_data.mjs` 生成：文件名改成码位（`6211.json` = 我），**修正了 6 个字的笔顺**，改动见目录里的 `NOTICE.md` | 2.0.1 | Arphic Public License（`ARPHICPL.TXT`、`APL/`） |
 | `pdfjs/` | [PDF.js](https://github.com/mozilla/pdf.js)（npm 包 pdfjs-dist 的 legacy 版 `pdf.min.mjs` + `pdf.worker.min.mjs`，附 `cmaps/`、`standard_fonts/`、`iccs/` 和 `wasm/` 里的 jbig2 / openjpeg / qcms 解码器，各自的许可证文件原样附在目录里；没拷脚本引擎 quickjs） | 6.4.299 | Apache-2.0（解码器：PDFium BSD-3、OpenJPEG BSD-2、qcms MIT；字体：Foxit BSD-3、Liberation 见 `LICENSE_LIBERATION`；ICC：CC0） |
 | `pdf-lib/` | [pdf-lib](https://github.com/Hopding/pdf-lib)（npm 包 `dist/pdf-lib.min.js`，UMD，附 LICENSE.md） | 1.17.1 | MIT |
+| `fontkit/` | [@pdf-lib/fontkit](https://github.com/Hopding/fontkit)（npm 包 `dist/fontkit.umd.min.js`，fontkit 的 pdf-lib 分支；第 10 期简历导出 PDF 时给 pdf-lib 嵌入中文字体子集用。包里没附许可证文件，`LICENSE` 是上游 foliojs/fontkit 的 MIT 原文） | 1.1.1 | MIT |
 | `signature_pad/` | [Signature Pad](https://github.com/szimek/signature_pad)（npm 包 `dist/signature_pad.min.js`，ES 模块，附 LICENSE） | 5.1.4 | MIT |
 
 自己托管而不走 CDN：国内访问 jsdelivr / Google 存储不稳定。升级时改 `package.json` 版本，`npm install` 后重新拷贝。

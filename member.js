@@ -71,7 +71,7 @@ window.Member = (() => {
     if (!cfg) return Promise.resolve('member');
     css(); close(null);
     return new Promise(resolve => {
-      const perks = cfg.perks || ['全站工具的进阶功能都能用（比如录音转文字不限时长）', '以后每天上新的工具，进阶功能一样能用'];
+      const perks = cfg.perks || ['全站工具的进阶功能都能用（录音转文字不限时长、简历存多份…）', '以后每天上新的工具，进阶功能一样能用'];
       const m = document.createElement('div'); m.className = 'mb-mask';
       m.innerHTML = `<div class="mb-box" role="dialog" aria-modal="true">
         <button class="mb-x" aria-label="关闭">✕</button>

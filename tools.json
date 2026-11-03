@@ -133,5 +133,20 @@
       "办公",
       "学习"
     ]
+  },
+  {
+    "day": 10,
+    "slug": "resume",
+    "name": "免费简历生成器",
+    "pain": "写简历别再在 Word 里一点点调格式",
+    "desc": "手机上填几行，简历实时排好：4 套模板、6 种颜色随便换，多了一键压成一页，导出文字版 PDF，没有水印、不用注册。",
+    "source": "Reactive Resume（模板）+ pdf-lib",
+    "source_url": "https://github.com/reactive-resume/reactive-resume",
+    "license": "MIT / OFL-1.1（字体）",
+    "tags": [
+      "效率",
+      "求职",
+      "PDF"
+    ]
   }
 ]

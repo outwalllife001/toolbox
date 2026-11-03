@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>免费简历生成器 · 填完直接出 PDF · 开源宝藏工具箱</title>
+<meta name="description" content="手机上填几行，简历实时排好：4 套模板、6 种颜色随便换，内容多了一键压成一页，导出文字版 PDF，没有水印、不用注册。内容只存在你自己的手机里，不上传。">
+<link rel="preload" href="fonts/sc-400.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="tpl.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>免费简历生成器</h1>
+  <p class="tag"><span>免费</span><span>无水印</span><span>不上传</span><span>开源</span></p>
+</header>
+
+<div class="app">
+  <section class="pv-card" id="pvCard">
+    <div class="tpls" id="tpls"></div>
+    <div class="pv" id="pv"><div class="pv-in" id="pvIn"><div class="pv-scale" id="pvScale"><div class="rs" id="rs"></div></div></div></div>
+    <div class="pv-bar"><div class="colors" id="colors"></div><span class="pg-info" id="pageInfo">1 页</span><button class="mini" id="fit" hidden>压成一页</button><button class="mini" id="expand">整页</button></div>
+  </section>
+
+  <main class="side-form">
+    <div class="docs"><label>我的简历</label><select id="docSel"></select><button class="lnk" id="docNew">另存一份</button><button class="lnk" id="docDel">删除</button></div>
+    <input type="file" id="photoFile" accept="image/*" hidden>
+    <div id="form"></div>
+    <p class="saved" id="saved">内容只存在这台设备的浏览器里</p>
+    <div class="bk"><button class="lnk" id="backup">备份到文件</button> · <label class="lnk" for="restoreFile">从备份恢复</label><input type="file" id="restoreFile" accept=".json,application/json" hidden></div>
+
+    <section class="card service" id="service" hidden></section>
+
+    <section class="card faq">
+      <h2>常见问题</h2>
+      <details><summary>我填的内容会上传吗？</summary><p>不会。简历的排版和生成 PDF 全部在你的手机浏览器里完成，页面没有任何上传接口。内容自动存在这台设备的浏览器里，下次打开还在；换手机可以用「备份到文件」带过去。清除浏览器数据会删掉，重要的话先下载 PDF。</p></details>
+      <details><summary>导出的 PDF 有水印吗？要不要钱？</summary><p>没有水印，不用注册，不限次数。导出的是「文字版」PDF：里面的字能选中、复制，招聘网站和 HR 的系统能读出你的电话、经历（不是一张图片）。</p></details>
+      <details><summary>内容多了跑到第二页怎么办？</summary><p>预览上会出现橙色虚线和「第 2 页」。点「压成一页」，会一档一档地缩小字号、行距和间距，直到一页放得下（正文最小 9pt，相当于小五号字）；还放不下就删掉几条不重要的经历。经历不会从中间被切开，放不下的整条挪到下一页。</p></details>
+      <details><summary>描述怎么写才好？</summary><p>每行写一件事，网页自动加圆点。尽量写「做了什么 + 结果」，带上数字：比如「策划开学季话题，单条笔记点赞 1.2 万」。不知道怎么写，点下面的「看看示例」参考。</p></details>
+      <details><summary>照片怎么弄？</summary><p>点「＋照片」选一张正面照，自动裁成一寸照的比例（5:7）。没有证件照，可以先用工具箱里的<a href="../idphoto/">一键证件照</a>做一张蓝底 / 白底的，再传上来。不想放照片就点「去掉照片」。</p></details>
+      <details><summary>有些字显示不出来？</summary><p>字体用的是思源黑体（Noto Sans SC，开源字体），常用的一万多个汉字随页面下载（约 4MB），更少见的字用到时再下载。万一 PDF 里有字是空白，生成时会提示是哪几个字。</p></details>
+      <details id="faqMember" hidden><summary>免费版和会员有什么区别？</summary><p>模板、颜色、导出 PDF 都免费。会员可以存多份简历（不同岗位各一份，随时切换）。</p></details>
+      <p class="credit">模板版式移植自开源简历项目 <a href="https://github.com/reactive-resume/reactive-resume" target="_blank" rel="noopener">Reactive Resume</a>（MIT）的 Onyx / Gengar / Pikachu / Kakuna 模板；PDF 由 <a href="https://github.com/Hopding/pdf-lib" target="_blank" rel="noopener">pdf-lib</a>（MIT）+ fontkit（MIT）生成，预览用 <a href="https://github.com/mozilla/pdf.js" target="_blank" rel="noopener">PDF.js</a>（Apache-2.0）；字体 <a href="https://github.com/notofonts/noto-cjk" target="_blank" rel="noopener">Noto Sans SC</a>（SIL OFL 1.1，裁成常用字子集，<a href="fonts/OFL.txt">许可证</a>）。</p>
+    </section>
+  </main>
+</div>
+
+<nav class="dock" id="dock">
+  <button class="dk" id="sample">看看示例</button>
+  <button class="dk go" id="go">下载 PDF</button>
+</nav>
+
+<div class="sheet" id="out" hidden>
+  <div class="sheet-in">
+    <div class="sheet-hd"><b>简历 PDF 做好了</b><button class="x" id="outClose" aria-label="关闭">×</button></div>
+    <p class="out-meta" id="outMeta"></p>
+    <p class="out-warn" id="outWarn" hidden></p>
+    <div class="out-prev" id="outPrev"></div>
+    <a class="primary" id="dl" href="#">保存 PDF</a>
+    <button class="btn" id="outShare" hidden>发送到微信 / 其他 App</button>
+    <p class="hint" id="wxTip" hidden>在微信 / 抖音里打开的，保存不了的话：点右上角「…」→「在浏览器打开」再保存</p>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
