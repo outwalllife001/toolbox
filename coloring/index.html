@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>照片变涂色画 · 开源宝藏工具箱</title>
+<meta name="description" content="孩子、宠物、全家福的照片一键变成线稿涂色画，线条粗细、细节多少随便调，能去背景，导出 A4 PDF 打印，也能在手机上直接涂。照片只在你的手机里处理，不上传。">
+<script>
+// 没有 GPU 加速的设备才走这段：多线程要「跨源隔离」，GitHub Pages 设不了响应头 → 装上 ../coi-sw.js 再自动刷新一次（只刷一次；不支持就单线程照样能用）
+(() => {
+  const q = new URLSearchParams(location.search);
+  if (self.crossOriginIsolated || q.get('threads') === '1' || !('serviceWorker' in navigator) || !self.isSecureContext) return;
+  const reg = () => {
+    const K = 'coi-reloaded';
+    const again = () => { if (sessionStorage.getItem(K)) return; sessionStorage.setItem(K, '1'); location.reload(); };
+    navigator.serviceWorker.register('../coi-sw.js', { scope: '../' }).then(r => {
+      if (navigator.serviceWorker.controller || r.active) again();
+      else navigator.serviceWorker.addEventListener('controllerchange', again, { once: true });
+    }).catch(() => {});
+  };
+  if (q.get('backend') === 'wasm' || !navigator.gpu) return reg();
+  navigator.gpu.requestAdapter().then(a => { if (!a || a.info?.isFallbackAdapter || /swiftshader/i.test(a.info?.architecture || '')) reg(); }).catch(reg);
+})();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>照片变涂色画</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <input type="file" id="file" accept="image/*" hidden>
+  <section class="card" id="main">
+    <div class="cmp" id="cmp">
+      <label class="drop-empty" id="dropEmpty" for="file">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="6"/><path d="M6 31l10-9 8 7 6-5 12 10"/><circle cx="31" cy="18" r="3.5"/></svg>
+        <b>上传一张照片</b>
+        <small>孩子、宠物、全家福都行，人物大一点效果好</small>
+      </label>
+      <div class="stage" id="stage" hidden>
+        <img id="before" alt="原图">
+        <canvas id="paint" hidden></canvas>
+        <canvas id="after"></canvas>
+      </div>
+      <div class="split" id="split" hidden><i></i><b>‹ ›</b></div>
+      <span class="lbl l" id="lblL" hidden>照片</span><span class="lbl r" id="lblR" hidden>涂色画</span>
+    </div>
+
+    <div id="setup">
+      <button class="primary" id="go" disabled>一键变涂色画</button>
+      <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+      <p class="status" id="status">正在准备 AI 模型…</p>
+      <button class="link" id="sample">没有合适的照片？用示例试试</button>
+    </div>
+
+    <div id="done" hidden>
+      <div id="adjust">
+        <div class="row">
+          <span class="rl">线条</span><small>细</small>
+          <input type="range" id="thick" min="1" max="5" step="0.1" value="3" aria-label="线条粗细">
+          <small>粗</small>
+        </div>
+        <div class="row">
+          <span class="rl">细节</span>
+          <div class="seg" id="details">
+            <button data-d="low">少 · 小小孩</button><button data-d="mid" class="on">中</button><button data-d="high">多</button>
+          </div>
+        </div>
+        <div class="row">
+          <span class="rl">背景</span>
+          <div class="seg" id="bgs">
+            <button data-b="keep" class="on">保留</button><button data-b="cut">去掉背景</button>
+          </div>
+        </div>
+        <p class="status" id="status2"></p>
+        <button class="primary" id="pdf">下载 A4 PDF（打印用）</button>
+        <div class="two">
+          <button class="btn" id="paintBtn">🖍️ 手机上直接涂</button>
+          <button class="btn" id="png">保存图片</button>
+        </div>
+        <div class="two">
+          <button class="btn ghost" id="addBook">＋ 加入涂色书</button>
+          <button class="btn ghost" id="again">换一张照片</button>
+        </div>
+        <div class="book" id="book" hidden>
+          <div class="thumbs" id="thumbs"></div>
+          <button class="btn" id="bookPdf">合成一本 PDF</button>
+        </div>
+        <p class="meta" id="meta"></p>
+      </div>
+
+      <div id="painter" hidden>
+        <div class="palette" id="palette"></div>
+        <div class="row tools">
+          <div class="seg" id="brushes">
+            <button data-r="9">细</button><button data-r="20" class="on">中</button><button data-r="38">粗</button>
+          </div>
+          <button class="mini" id="eraser">橡皮</button>
+          <button class="mini" id="undo">撤销</button>
+          <button class="mini" id="clearPaint">清空</button>
+        </div>
+        <button class="primary" id="savePaint">保存涂好的图片</button>
+        <div class="two">
+          <button class="btn" id="paintPdf">存成 A4 PDF</button>
+          <button class="btn ghost" id="backAdjust">返回调线条</button>
+        </div>
+      </div>
+      <p class="hint">在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」再保存。</p>
+    </div>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>照片会上传吗？</summary><p>不会。线稿全部在你的手机浏览器里算出来，页面没有任何上传接口，孩子的照片不会离开这台设备。</p></details>
+    <details><summary>什么样的照片效果好？</summary><p>光线均匀、人物或宠物占画面大一半、背景不太乱的照片。脸太小的合影、逆光、很暗的照片，线条容易断或者脸上线条不好看。AI 画的线是它自己理解的，不会和照片一模一样，五官可能有点变形。</p></details>
+    <details><summary>线条断断续续、太乱怎么办？</summary><p>把「线条」拖粗一点；背景太乱就点「去掉背景」；线条太密就把「细节」改成「少」，适合小小孩的大块涂色。</p></details>
+    <details><summary>怎么打印？</summary><p>点「下载 A4 PDF」，用手机连打印机打印，或者把 PDF 发到电脑、打印店。一张 A4 上四周留了 8mm 白边，横着拍的照片会自动横放。普通黑白打印就够了。</p></details>
+    <details><summary>没有打印机怎么办？</summary><p>点「手机上直接涂」，选颜色用手指涂。每涂一下，颜色碰到线就停；如果线条本身有缺口，颜色可能从缺口漏过去一点，点「撤销」或换细一点的笔就好。涂好可以存成图片或 PDF。</p></details>
+    <details><summary>什么是涂色书？</summary><p>每做好一张点「加入涂色书」，几张合成一个多页 PDF，一次打印。刷新页面后列表会清空，记得先合成下载。</p></details>
+    <details><summary>第一次打开为什么要等？</summary><p>要下载约 8MB 的 AI 模型和 3–5MB 的运行库（只下载一次，之后走缓存）。第一次点「去掉背景」时再下载约 40MB 的抠图模型（用过「AI 抠图」的不用再下）。</p></details>
+    <details><summary>为什么有的手机很快、有的很慢？</summary><p>浏览器支持 GPU 加速（WebGPU）时不到 1 秒（电脑上实测约 0.3 秒，手机没有实测）；不支持的用 CPU 算，电脑上 4 线程约 1.7 秒、单线程约 5 秒，手机上会更慢，可能要十几秒到几十秒。想快一点就把「细节」改成「少」。结果下面会写用的是「GPU 加速」还是「CPU 模式」。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>线稿模型来自开源项目 <a href="https://github.com/carolineec/informative-drawings" target="_blank" rel="noopener">informative-drawings</a>（MIT 许可证，© 2022 Caroline Chan；论文 CVPR 2022，作者 Caroline Chan、Frédo Durand、Phillip Isola，MIT CSAIL）的 anime_style 模型，为网页转换了格式。</p>
+  <p><a href="../models/LICENSE-informative-drawings.txt" target="_blank" rel="noopener">许可证全文</a> · 去背景：<a href="https://github.com/xuebinqin/DIS" target="_blank" rel="noopener">DIS / IS-Net</a>（Apache-2.0）· PDF：pdf-lib（MIT）· 推理：ONNX Runtime Web（MIT）· 浏览器端移植与界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

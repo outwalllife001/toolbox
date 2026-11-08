@@ -148,5 +148,20 @@
       "求职",
       "PDF"
     ]
+  },
+  {
+    "day": 11,
+    "slug": "coloring",
+    "name": "照片变涂色画",
+    "pain": "孩子的涂色画别再网上一张张找",
+    "desc": "孩子、宠物、全家福的照片，AI 描成黑白线稿：线条粗细、细节多少随便调，能去背景，下载 A4 PDF 打印，也能在手机上直接涂。",
+    "source": "informative-drawings（MIT CSAIL，CVPR 2022）",
+    "source_url": "https://github.com/carolineec/informative-drawings",
+    "license": "MIT",
+    "tags": [
+      "亲子",
+      "图片",
+      "打印"
+    ]
   }
 ]
