@@ -163,5 +163,20 @@
       "图片",
       "打印"
     ]
+  },
+  {
+    "day": 12,
+    "slug": "pdf",
+    "name": "PDF 合并 · 压缩",
+    "pain": "合并、压缩个 PDF 别再开会员",
+    "desc": "几个 PDF、几张照片合成一个 PDF：拖动排顺序、删页、转方向，一键压到 2MB、500KB 等指定大小，文字不变糊。",
+    "source": "BentoPDF（Hyper Compress 压缩引擎）+ pdf-lib",
+    "source_url": "https://github.com/alam00000/bentopdf",
+    "license": "AGPL-3.0 / MIT",
+    "tags": [
+      "PDF",
+      "求职",
+      "办公"
+    ]
   }
 ]

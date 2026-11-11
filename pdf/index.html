@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PDF 合并 · 压缩到指定大小 · 免费不上传 · 开源宝藏工具箱</title>
+<meta name="description" content="几个 PDF、几张照片合成一个 PDF：拖动排顺序、删页、转方向，压缩到 2MB、500KB 等指定大小。文字不变糊，文件只在你的手机里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>PDF 合并 · 压缩</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <input type="file" id="file" accept="application/pdf,.pdf,image/*" multiple hidden>
+  <section class="card" id="main">
+    <label class="drop-empty" id="dropEmpty" for="file">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 9h15l7 7v23H9z"/><path d="M17 4h15l7 7v23"/><path d="M15 26h10M15 31h10"/></svg>
+      <b>添加 PDF 或照片</b>
+      <small>可以一次选好几个 · 简历、证书、扫描件、手机拍的照片都行</small>
+    </label>
+    <div id="pagesWrap" hidden>
+      <p class="meta" id="docMeta"></p>
+      <p class="tip">长按拖动排顺序 · <i class="ic">↻</i> 转方向 · <i class="ic">✕</i> 删掉这页</p>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="card" id="opts" hidden>
+    <h2>压缩</h2>
+    <div class="chips" id="levels">
+      <button class="chip" data-l="none">不压缩<small>原样合并</small></button>
+      <button class="chip" data-l="hq">清晰<small>小一些</small></button>
+      <button class="chip on" data-l="std">推荐<small>清楚又小</small></button>
+      <button class="chip" data-l="min">最小<small>照片会糊些</small></button>
+      <button class="chip" data-l="target">指定大小<small>报名常用</small></button>
+    </div>
+    <div id="targetBox" hidden>
+      <h2>压到多大以内</h2>
+      <div class="chips" id="targets">
+        <button class="chip" data-t="200000">200KB</button>
+        <button class="chip" data-t="500000">500KB</button>
+        <button class="chip" data-t="1000000">1MB</button>
+        <button class="chip on" data-t="2000000">2MB</button>
+        <button class="chip" data-t="5000000">5MB</button>
+        <button class="chip" data-t="custom">自定义</button>
+      </div>
+      <div class="custom" id="customBox" hidden>
+        <input type="number" id="customVal" inputmode="decimal" min="0.05" step="0.1" value="3">
+        <select id="customUnit"><option value="1000000">MB</option><option value="1000">KB</option></select>
+        <span>以内</span>
+      </div>
+    </div>
+    <button class="primary" id="go">合并成一个 PDF</button>
+    <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+    <p class="status" id="status"></p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>文件会上传吗？</summary><p>不会。打开、合并、压缩全部在你的手机（电脑）浏览器里完成，页面没有任何上传接口，身份证、证书这类材料也可以放心用。第一次压缩要下载约 3MB 的压缩引擎，之后走缓存。</p></details>
+    <details><summary>压缩后文字会变糊吗？</summary><p>文字版的 PDF（Word、WPS 导出的那种）压缩时文字还是文字，不会变糊，也能选中、搜索；变小主要靠重新压缩里面的图片、精简字体和文件结构。手机拍的照片、扫描件本身就是图片，压得越小越模糊：选「指定大小」时，网页会在放得下的前提下挑最清晰的一档。</p></details>
+    <details><summary>「指定大小」是怎么算的？</summary><p>按 1MB = 1000KB = 1,000,000 字节算，比按 1024 算的系统更严一点，所以压出来的文件两种算法下都不超过你选的大小。网页会从最清晰的一档开始试，放不下再往小试，最多试 4 次。如果最低画质也放不下（比如几十页的照片），会告诉你最小能压到多少：可以删掉几页，或者分成两个文件。</p></details>
+    <details><summary>只要其中几页 / 想拆分怎么办？</summary><p>把不要的页点 <b>✕</b> 删掉再保存，就是「提取」这几页。要拆成几份，就分几次保存：每次只留要的页（删错了重新添加文件就行）。</p></details>
+    <details><summary>照片是怎么放进 PDF 的？</summary><p>每张照片一页：竖的照片放在竖版 A4 上，横的放在横版 A4 上，四周留 5 毫米白边，照片原样嵌入不裁剪。拍歪了（横过来了）点 <b>↻</b> 转正。</p></details>
+    <details><summary>有密码的 PDF 能合并吗？</summary><p>能。打开时输入密码，合并前网页会先把它解密（也是在本机），合出来的新 PDF 不带密码。只限制编辑、没有打开密码的 PDF 也一样能用。</p></details>
+    <details><summary>带电子签章的 PDF 呢？</summary><p>合并、压缩都会改动文件内容，原来的数字签名会失效（印章图案还在）。需要保留签名有效性的文件（比如电子发票、电子合同原件）请单独提交原件，不要合并或压缩。</p></details>
+  </section>
+</main>
+
+<div class="ghost" id="ghost" hidden></div>
+
+<div class="sheet" id="outSheet" hidden>
+  <div class="sheet-in">
+    <div class="sheet-hd"><b id="outTitle">好了</b><button class="x" id="outClose" aria-label="关闭">×</button></div>
+    <div class="sizes" id="outSizes"></div>
+    <p class="meta" id="outMeta"></p>
+    <div class="out-prev" id="outPrevBox"><canvas id="outPrev"></canvas></div>
+    <a class="primary save" id="dlPdf" download>保存 PDF</a>
+    <p class="hint">在微信 / 抖音里保存不了？点右上角「…」选「在浏览器打开」再保存。</p>
+  </div>
+</div>
+
+<footer>
+  <p>压缩引擎来自开源项目 <a href="https://github.com/alam00000/bentopdf" target="_blank" rel="noopener">BentoPDF</a> 团队的 <a href="https://github.com/alam00000/bentopdf-hyper-compress" target="_blank" rel="noopener">Hyper Compress</a>（AGPL-3.0，基于 PDFium，原样使用 npm 包 hyper-compress-wasm 1.1.3）；合并、转方向用 <a href="https://github.com/Hopding/pdf-lib" target="_blank" rel="noopener">pdf-lib</a>（MIT），缩略图用 Mozilla <a href="https://github.com/mozilla/pdf.js" target="_blank" rel="noopener">PDF.js</a>（Apache-2.0）。</p>
+  <p>本页代码以 <a href="LICENSE.md" target="_blank" rel="noopener">AGPL-3.0</a> 开源 · <a href="https://github.com/outwalllife001/toolbox/tree/main/pdf" target="_blank" rel="noopener">本页源代码</a> · <a href="../vendor/README.md" target="_blank" rel="noopener">第三方组件与许可证</a></p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

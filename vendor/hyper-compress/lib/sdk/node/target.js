@@ -1,0 +1,22 @@
+export const TARGET_QUALITY_FLOOR = 5;
+export const TARGET_DPI_LADDER = [72, 50, 36];
+export const TARGET_QUALITY_STEPS = 7;
+export function targetStartQuality(base) {
+    return Math.min(95, base.imageQuality > TARGET_QUALITY_FLOOR ? base.imageQuality : 80);
+}
+export function targetLadder(base) {
+    return TARGET_DPI_LADDER.map((dpi) => ({
+        ...base,
+        imageQuality: TARGET_QUALITY_FLOOR,
+        maxDpi: dpi,
+        maxDpiColor: 0,
+        maxDpiGray: 0,
+        forceDownsample: true,
+    }));
+}
+export function targetMissWarning(smallest, target) {
+    const floorDpi = TARGET_DPI_LADDER[TARGET_DPI_LADDER.length - 1];
+    return (`target of ${target} bytes not reached: ${smallest} bytes is the smallest ` +
+        `this document compresses to at quality ${TARGET_QUALITY_FLOOR} and ${floorDpi} dpi. ` +
+        'For image-only documents, rasterizePages can go further.');
+}

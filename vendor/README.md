@@ -14,6 +14,7 @@
 | `pdf-lib/` | [pdf-lib](https://github.com/Hopding/pdf-lib)（npm 包 `dist/pdf-lib.min.js`，UMD，附 LICENSE.md） | 1.17.1 | MIT |
 | `fontkit/` | [@pdf-lib/fontkit](https://github.com/Hopding/fontkit)（npm 包 `dist/fontkit.umd.min.js`，fontkit 的 pdf-lib 分支；第 10 期简历导出 PDF 时给 pdf-lib 嵌入中文字体子集用。包里没附许可证文件，`LICENSE` 是上游 foliojs/fontkit 的 MIT 原文） | 1.1.1 | MIT |
 | `signature_pad/` | [Signature Pad](https://github.com/szimek/signature_pad)（npm 包 `dist/signature_pad.min.js`，ES 模块，附 LICENSE） | 5.1.4 | MIT |
+| `hyper-compress/` | [Hyper Compress](https://github.com/alam00000/bentopdf-hyper-compress)（[BentoPDF](https://github.com/alam00000/bentopdf) 团队的 PDF 压缩引擎，基于 PDFium；npm 包 `hyper-compress-wasm` 的 `index.js`、`lib/`、`engine/`，附 LICENSE、上游 tag v1.1.3 的 NOTICE.md；第 12 期 PDF 合并压缩用） | 1.1.3 | AGPL-3.0-only（原样使用，未修改；源码见上游 tag [v1.1.3](https://github.com/alam00000/bentopdf-hyper-compress/tree/v1.1.3)；引擎内的第三方组件见 NOTICE.md：PDFium BSD-3、qpdf Apache-2.0、jpegli BSD-3 等） |
 
 自己托管而不走 CDN：国内访问 jsdelivr / Google 存储不稳定。升级时改 `package.json` 版本，`npm install` 后重新拷贝。
 jscanify 的 npm 包依赖 node-canvas（要编译原生模块），没放进 `package.json`：用 `npm pack jscanify@<版本>` 解包后拷贝上面两个文件。
