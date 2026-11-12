@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>今天吃什么 · 开源宝藏工具箱</title>
+<meta name="description" content="点一点家里有的食材，马上告诉你现在就能做哪些菜、再买一样还能做哪些，纠结就让它帮你挑一道。341 道家常菜，每道都有用量和详细步骤，来自开源菜谱 HowToCook。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>今天吃什么</h1>
+  <p class="tag"><span>免费</span><span id="tagCount">家常菜</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <section class="card" id="pick">
+    <div class="h2row"><h2>家里有什么？<small>点一点</small></h2><button class="mini ghost" id="clear" hidden>清空</button></div>
+    <div class="tabs" id="tabs"></div>
+    <div class="ings" id="ings"><p class="hint">正在加载菜谱…</p></div>
+    <p class="pantry">默认你家有常用调料：油、盐、酱油、醋、糖、葱姜蒜、淀粉、料酒、蚝油、胡椒粉</p>
+  </section>
+
+  <section class="card" id="result" hidden>
+    <div class="sum">
+      <div class="sum-t"><span id="sumLabel">现在就能做</span><b id="sumN">0</b><span>道</span></div>
+      <button class="primary dice" id="dice">🎲 帮我选一道</button>
+    </div>
+    <div class="chips" id="cats"></div>
+    <div class="list" id="list"></div>
+    <button class="btn more" id="moreCan" hidden></button>
+    <div id="oneBox" hidden>
+      <h3>再买一样，还能做 <b id="oneN">0</b> 道</h3>
+      <div class="list" id="oneList"></div>
+      <button class="btn more" id="moreOne" hidden></button>
+    </div>
+  </section>
+
+  <section class="card" id="searchCard" hidden>
+    <h2>想吃的菜直接搜</h2>
+    <input id="q" type="search" placeholder="比如：红烧肉、可乐鸡翅、蛋炒饭" autocomplete="off">
+    <div class="list" id="qList"></div>
+  </section>
+
+  <section class="card" id="week" hidden>
+    <div class="h2row"><h2>一周菜单 <small>每天一荤一素，不重样</small></h2></div>
+    <p class="hint left">优先用你勾选的食材，按菜谱难度挑家常能做的，顺手列好买菜清单。</p>
+    <button class="btn" id="weekGo">排一周菜单 + 买菜清单</button>
+    <div id="weekOut" hidden>
+      <div class="days" id="days"></div>
+      <div class="shop" id="shop"></div>
+      <div class="row2"><button class="btn" id="weekAgain">换一批</button><button class="btn" id="weekCopy">复制菜单和清单</button></div>
+      <p class="status" id="weekStatus"></p>
+    </div>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>菜谱是哪来的？靠谱吗？</summary><p>全部来自 GitHub 上的开源菜谱《程序员做饭指南》（HowToCook）：一群程序员嫌网上的菜谱「少许、适量」说不清，自己写了一套带克数、毫升、分钟的做法，几百人一起改了几年。本页收了其中 <span id="faqN">300 多</span>道（饮品、酱料没收），做法原文照搬，没有改动；每道菜下面都有原文链接。</p></details>
+    <details><summary>「现在就能做」是怎么算的？</summary><p>每道菜的「必备原料」里，主料（菜、肉、蛋、主食）你都勾上了，就算能做；油、盐、酱油、醋、糖、葱姜蒜、淀粉、料酒这些常用调料默认你家有。八角、豆瓣酱这类不一定家家都有的，会在菜名下面写「另需」。原菜谱里标了「可选」的不算。归类是程序做的，偶尔会不准，点开菜谱能看到原文写的全部原料，以它为准。</p></details>
+    <details><summary>为什么勾了「猪肉」，红烧肉、小炒肉都出来了？</summary><p>为了少点几下，五花肉、里脊、肉末都算「猪肉」，各种鱼都算「鱼」，青椒、尖椒都算「青椒」。具体要哪个部位，点开菜谱看原料。</p></details>
+    <details><summary>卡路里准吗？</summary><p>是原菜谱作者估算的一份的热量，只能当参考，别拿来做严格的饮食控制。</p></details>
+    <details><summary>我点的食材会上传吗？</summary><p>不会。菜谱数据一次下到你手机里（不到 1MB），勾选、匹配、排菜单都在浏览器里算，勾过的食材只存在你自己的手机上。</p></details>
+    <details><summary>做菜时屏幕老是自己灭？</summary><p>打开菜谱后点「屏幕常亮」，做菜时就不会熄屏（部分浏览器不支持）。做完一步点一下那一步，会划掉；步骤里写了时间的，点旁边的计时按钮。</p></details>
+  </section>
+</main>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-bar"><button class="mini ghost" id="back">‹ 返回</button><span id="sheetTitle"></span><button class="mini" id="awake" hidden>屏幕常亮</button></div>
+  <div class="sheet-body" id="recipe"></div>
+</div>
+
+<div class="slot" id="slot" hidden>
+  <div class="slot-box">
+    <p class="slot-top" id="slotTop">今天就吃…</p>
+    <div class="slot-pic" id="slotPic"></div>
+    <div class="slot-name" id="slotName"></div>
+    <p class="slot-meta" id="slotMeta"></p>
+    <button class="primary" id="slotOpen" hidden>看做法</button>
+    <div class="row2" id="slotBtns" hidden><button class="btn" id="slotAgain">🎲 换一道</button><button class="btn" id="slotClose">关闭</button></div>
+  </div>
+</div>
+<div class="timer" id="timer" hidden><span id="timerT"></span><button id="timerX">✕</button></div>
+
+<footer>
+  <p>菜谱全部来自开源项目 <a href="https://github.com/Anduin2017/HowToCook" target="_blank" rel="noopener">HowToCook · 程序员做饭指南</a>（Unlicense，作者放弃版权、进入公有领域），<span id="srcVer"></span>；做法和成品照片为原项目贡献者所写所拍，本页未改动做法，只把一个菜名「韩国麻药鸡蛋」改成了「韩式酱油腌鸡蛋」。</p>
+  <p>「按食材找菜」的玩法和食材图标参考了开源项目 <a href="https://github.com/YunYouJun/cook" target="_blank" rel="noopener">YunYouJun/cook</a>（MIT）。</p>
+  <p><a href="NOTICE.md" target="_blank" rel="noopener">数据来源和许可证说明</a> · 食材归类、匹配和界面由开源宝藏工具箱制作。饮食有忌口、过敏的，请自己把关。</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

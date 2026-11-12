@@ -178,5 +178,20 @@
       "求职",
       "办公"
     ]
+  },
+  {
+    "day": 13,
+    "slug": "cook",
+    "name": "今天吃什么",
+    "pain": "别再对着冰箱纠结今天吃什么",
+    "desc": "点一点家里有的食材，马上列出现在就能做的菜、再买一样还能做的菜，纠结就让它帮你挑一道；341 道家常菜，用量精确到克，步骤一条条写清楚。",
+    "source": "HowToCook · 程序员做饭指南",
+    "source_url": "https://github.com/Anduin2017/HowToCook",
+    "license": "Unlicense",
+    "tags": [
+      "生活",
+      "做饭",
+      "宝妈"
+    ]
   }
 ]
