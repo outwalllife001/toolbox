@@ -193,5 +193,20 @@
       "做饭",
       "宝妈"
     ]
+  },
+  {
+    "day": 14,
+    "slug": "mindmap",
+    "name": "笔记一键变思维导图",
+    "pain": "别再一个框一个框地画思维导图",
+    "desc": "读书笔记、复习提纲、会议记录粘贴进来，一键变成思维导图：6 种结构、6 套配色，点一下就能加、删、改字；导出高清图片、A4 PDF、XMind 文件，免费没有水印。",
+    "source": "simple-mind-map · 思绪思维导图",
+    "source_url": "https://github.com/wanglin2/mind-map",
+    "license": "MIT",
+    "tags": [
+      "学习",
+      "办公",
+      "作业"
+    ]
   }
 ]

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>笔记一键变思维导图 · 开源宝藏工具箱</title>
+<meta name="description" content="把读书笔记、复习提纲、会议记录粘贴进来，一键生成思维导图：能换结构、换配色、点一下就改，导出高清图片、A4 PDF、XMind 文件，免费、没有水印、不用注册。基于开源项目 simple-mind-map。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>笔记一键变思维导图</h1>
+  <p class="tag"><span>免费</span><span>无水印</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <section class="card" id="inCard">
+    <div class="h2row"><h2>把笔记、提纲粘贴进来</h2><button class="mini ghost" id="open">打开文件</button></div>
+    <div class="samples" id="samples"><span>试试：</span></div>
+    <textarea id="src" rows="9" spellcheck="false" placeholder="一行一个要点，空格缩进或者「一、」「1.」「（1）」分层，例如：&#10;读书笔记&#10;一、主要人物&#10;1. 孙悟空&#10;2. 猪八戒&#10;二、经典故事"></textarea>
+    <button class="primary" id="go">✨ 一键生成思维导图</button>
+    <p class="hint">Word、备忘录、Markdown 里复制的提纲都认；也能打开 XMind、Markdown 文件</p>
+    <input type="file" id="file" accept=".xmind,.md,.markdown,.txt,.smm,.json" hidden>
+  </section>
+
+  <section class="card" id="mapCard" hidden>
+    <h2 id="mapTitle" class="mtitle">思维导图</h2>
+    <div class="seg" id="layouts" aria-label="结构"></div>
+    <div class="pals" id="pals" aria-label="配色"></div>
+    <div class="mapwrap" id="wrap">
+      <div class="mtools">
+        <span class="cnt" id="cnt"></span>
+        <button id="undo" title="撤销" aria-label="撤销">↶</button>
+        <button id="redo" title="重做" aria-label="重做">↷</button>
+        <button id="fit" title="看全图">⤢ 全图</button>
+        <button id="full" title="全屏">⛶ 全屏</button>
+      </div>
+      <div class="mapbox">
+        <div id="map"></div>
+        <div class="nodebar" id="nodebar" hidden>
+          <button id="addChild">＋下一级</button>
+          <button id="addSib">＋同一级</button>
+          <button id="edit">✎ 改文字</button>
+          <button id="del" class="warn">删除</button>
+        </div>
+        <p class="maphint" id="maphint">点一下主题就能改字、加内容；单指拖动，两指缩放</p>
+      </div>
+    </div>
+    <button class="primary" id="exPng">导出高清图片</button>
+    <div class="row3">
+      <button class="btn" id="exPdf">PDF（A4 打印）</button>
+      <button class="btn" id="exXmind">XMind 文件</button>
+      <button class="btn" id="exText">复制大纲</button>
+    </div>
+    <p class="status" id="status"></p>
+  </section>
+
+  <section class="card" id="docsCard" hidden>
+    <div class="h2row"><h2>我的导图 <small>存在这台手机上</small></h2><button class="mini" id="newDoc">＋ 新建</button></div>
+    <div class="docs" id="docs"></div>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>提纲要怎么写，才能分好层？</summary><p>一行一个要点。下一级的内容往里缩进（空格、Tab 都行），或者用编号分层：「一、」下面写「1.」，「1.」下面写「（1）」或「①」；Markdown 的 #、##、- 也认。第一行没有编号的话，它就是中间的大标题。分得不对也没关系，生成后点主题可以改、加、删。</p></details>
+    <details><summary>导出的图片有水印吗？要钱吗？</summary><p>没有水印，不用注册、不限次数。高清图片、A4 PDF、XMind 文件、复制大纲都免费。</p></details>
+    <details><summary>手机上怎么保存图片？</summary><p>点「导出高清图片」后会弹出图片：长按图片保存到相册，或者点「下载图片」。在微信、抖音里打开下载不了的话，点右上角「…」选「在浏览器打开」再试。</p></details>
+    <details><summary>能打开 XMind 的文件吗？导出的能用 XMind 打开吗？</summary><p>能。「打开文件」选 .xmind 文件就会显示出来；「XMind 文件」导出的也能用 XMind 打开继续改（主题文字和层级都在，配色按 XMind 自己的）。</p></details>
+    <details><summary>我的笔记会上传吗？</summary><p>不会。网页没有上传接口，拆分层级、画图、导出全在你的手机浏览器里做，导图只存在这台手机上（「我的导图」）。换手机或清了浏览器数据就没了，重要的记得导出。</p></details>
+    <details><summary>能自动帮我总结文章、生成导图吗？</summary><p>这一页不用 AI，只按你写好的层级画图，所以不会编内容。整段文章要先自己分成一行一个要点。</p></details>
+  </section>
+</main>
+
+<div class="sheet" id="editSheet" hidden>
+  <div class="sheet-box">
+    <p class="sheet-t">改文字</p>
+    <textarea id="editText" rows="2"></textarea>
+    <div class="row2"><button class="btn" id="editCancel">取消</button><button class="primary" id="editOk">确定</button></div>
+  </div>
+</div>
+
+<div class="viewer" id="viewer" hidden>
+  <div class="viewer-bar"><button class="mini ghost" id="vClose">‹ 返回</button><span id="vInfo"></span><a class="mini" id="vDown" download>下载图片</a></div>
+  <div class="viewer-body"><img id="vImg" alt="导出的思维导图"></div>
+  <p class="viewer-hint">长按图片可以保存到相册 · 没有水印</p>
+</div>
+
+<footer>
+  <p>画图引擎来自开源项目 <a href="https://github.com/wanglin2/mind-map" target="_blank" rel="noopener">simple-mind-map（思绪思维导图）</a>，MIT 许可证，<span id="ver"></span>；本页只用了它的核心库，界面、提纲拆分、配色、PDF 导出由开源宝藏工具箱制作。</p>
+  <p><a href="../vendor/simple-mind-map/LICENSES.txt" target="_blank" rel="noopener">许可证原文</a> · PDF 导出用 <a href="https://github.com/Hopding/pdf-lib" target="_blank" rel="noopener">pdf-lib</a>（MIT）</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
