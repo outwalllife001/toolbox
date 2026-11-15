@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>黑白老照片上色 · 开源宝藏工具箱</title>
+<meta name="description" content="爷爷奶奶的黑白老照片、泛黄的全家福，AI 一键上色：自动修复褪色，色彩浓淡随便调，还能顺手变高清。照片只在你的手机里处理，不上传。">
+<script>
+// 没有 GPU 加速的设备才走这段：多线程要「跨源隔离」，GitHub Pages 设不了响应头 → 装上 ../coi-sw.js 再自动刷新一次（只刷一次；不支持就单线程照样能用）
+(() => {
+  const q = new URLSearchParams(location.search);
+  if (self.crossOriginIsolated || q.get('threads') === '1' || !('serviceWorker' in navigator) || !self.isSecureContext) return;
+  const reg = () => {
+    const K = 'coi-reloaded';
+    const again = () => { if (sessionStorage.getItem(K)) return; sessionStorage.setItem(K, '1'); location.reload(); };
+    navigator.serviceWorker.register('../coi-sw.js', { scope: '../' }).then(r => {
+      if (navigator.serviceWorker.controller || r.active) again();
+      else navigator.serviceWorker.addEventListener('controllerchange', again, { once: true });
+    }).catch(() => {});
+  };
+  if (q.get('backend') === 'wasm' || !navigator.gpu) return reg();
+  navigator.gpu.requestAdapter().then(a => { if (!a || a.info?.isFallbackAdapter || /swiftshader/i.test(a.info?.architecture || '')) reg(); }).catch(reg);
+})();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>黑白老照片上色</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <input type="file" id="file" accept="image/*" multiple hidden>
+  <section class="card" id="main">
+    <div class="cmp" id="cmp">
+      <label class="drop-empty" id="dropEmpty" for="file">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="9" width="36" height="30" rx="6"/><path d="M6 31l10-9 8 7 6-5 12 10"/><circle cx="31" cy="18" r="3.5"/></svg>
+        <b>上传黑白老照片</b>
+        <small>手机翻拍、扫描的都行，一次可以选好几张</small>
+      </label>
+      <div class="stage" id="stage" hidden>
+        <img id="before" alt="原图">
+        <canvas id="after"></canvas>
+      </div>
+      <div class="split" id="split" hidden><i></i><b>‹ ›</b></div>
+      <span class="lbl l" id="lblL" hidden>原图</span><span class="lbl r" id="lblR" hidden>上色后</span>
+    </div>
+    <div class="thumbs" id="thumbs" hidden></div>
+
+    <div id="setup">
+      <button class="primary" id="go" disabled>一键上色</button>
+      <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+      <p class="status" id="status">先上传一张照片</p>
+      <button class="link" id="sample">手边没有老照片？用示例试试</button>
+    </div>
+
+    <div id="done" hidden>
+      <div class="row">
+        <span class="rl">色彩</span><small>淡</small>
+        <input type="range" id="sat" min="0" max="1.6" step="0.02" value="1" aria-label="色彩浓淡">
+        <small>浓</small>
+      </div>
+      <div class="row opts">
+        <label class="chk" id="fadeL"><input type="checkbox" id="fade"><span>修复褪色</span></label>
+        <label class="chk" id="markL"><input type="checkbox" id="mark" checked><span>角上标「AI 上色」</span></label>
+      </div>
+      <p class="status" id="status2"></p>
+      <div class="bar" id="bar2" hidden><i id="bar2In"></i></div>
+      <button class="primary" id="save">保存彩色照片</button>
+      <div class="two">
+        <button class="btn" id="hd">✨ 顺手变高清</button>
+        <button class="btn ghost" id="more">＋ 再加几张</button>
+      </div>
+      <button class="btn" id="saveAll" hidden>全部保存</button>
+      <p class="meta" id="meta"></p>
+      <p class="hint">在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」再保存。</p>
+    </div>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>照片会上传吗？</summary><p>不会。上色全部在你的手机浏览器里完成，页面没有任何上传接口，家里的老照片不会离开这台设备。</p></details>
+    <details><summary>上的颜色是照片当年真实的颜色吗？</summary><p>不是。黑白照片里没有颜色信息，AI 是按「它见过的几百万张照片里，这样的东西一般是什么颜色」猜出来的：皮肤、天空、树木、砖墙通常猜得自然；衣服、布景、小物件的颜色它不可能知道，可能和当年不一样。照片的清晰度和明暗完全来自原照片，AI 只加颜色。</p></details>
+    <details><summary>颜色不满意怎么办？</summary><p>拖「色彩」滑块：往左淡一点更像老彩照，往右更鲜艳。个别地方（嘴唇、衣角）颜色过头时，往左调淡一点通常就自然了。整张照片发灰、对比很弱时勾上「修复褪色」（褪色明显的照片会自动勾上）。</p></details>
+    <details><summary>什么样的照片效果好？</summary><p>人像、合影、风景、街景这些常见内容。翻拍时把照片放平、光线均匀、别反光，尽量拍满画面。折痕、霉点、缺角补不了；脸很小或者很糊的，颜色可能涂到脸外面。泛黄的照片不用先处理，上色时会自动去掉黄底。</p></details>
+    <details><summary>「顺手变高清」是什么？</summary><p>用工具箱里「模糊照片变高清」的同一个模型（Real-ESRGAN）把照片放大、去噪点，再合上颜色。翻拍得比较糊、尺寸小的照片有用；人脸只有几个像素大的，放大后可能不像本人，不满意可以点「还原」。</p></details>
+    <details><summary>为什么图片角上有「AI 上色」几个字？</summary><p>颜色是 AI 生成的，发到网上时按规定要让别人看得出来，所以默认在右下角加一行小字。自己留着看、打印出来送长辈，可以把「角上标 AI 上色」的勾去掉；去掉后发到网上请自己说明是 AI 上色。</p></details>
+    <details><summary>第一次用为什么要等？</summary><p>选好照片后要下载约 57MB 的 AI 模型（只下载一次，之后存在浏览器里），建议连 Wi-Fi。下载完上色本身很快。</p></details>
+    <details><summary>为什么有的手机很快、有的很慢？</summary><p>浏览器支持 GPU 加速（WebGPU）时，电脑上实测不到半秒；不支持的用 CPU 算，电脑上 4 线程约 1 秒、单线程约 2 秒，手机上没有实测，估计要几秒到十几秒。结果下面会写用的是「GPU 加速」还是「CPU 模式」。</p></details>
+    <details><summary>一次能处理几张？</summary><p>可以一次选好几张，点「全部上色」挨个处理，每张都能单独调颜色。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>上色模型来自开源项目 <a href="https://github.com/piddnad/DDColor" target="_blank" rel="noopener">DDColor</a>（Apache-2.0；论文 ICCV 2023，阿里巴巴达摩院）的 ddcolor_paper_tiny，为网页转换了格式、把权重压成 8 位。</p>
+  <p><a href="../models/LICENSE-DDColor.txt" target="_blank" rel="noopener">DDColor 许可证全文</a> · 变高清：<a href="https://github.com/xinntao/Real-ESRGAN" target="_blank" rel="noopener">Real-ESRGAN</a>（BSD-3-Clause）· 推理：ONNX Runtime Web（MIT）· 浏览器端移植与界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

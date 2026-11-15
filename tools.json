@@ -208,5 +208,20 @@
       "办公",
       "作业"
     ]
+  },
+  {
+    "day": 15,
+    "slug": "oldphoto",
+    "name": "黑白老照片上色",
+    "pain": "爷爷奶奶的黑白老照片，别再花钱找人上色",
+    "desc": "黑白、泛黄的老照片一键变彩色：自动修复褪色，色彩浓淡随手调，还能顺手变高清；一次可以放好几张。照片只在手机里处理，不上传。",
+    "source": "DDColor（阿里达摩院 · ICCV 2023）",
+    "source_url": "https://github.com/piddnad/DDColor",
+    "license": "Apache-2.0",
+    "tags": [
+      "图片",
+      "老照片",
+      "家庭"
+    ]
   }
 ]

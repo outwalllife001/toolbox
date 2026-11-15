@@ -19,8 +19,10 @@
 | [照片变涂色画](coloring/) | [informative-drawings](https://github.com/carolineec/informative-drawings)（anime_style 模型）+ [DIS / IS-Net](https://github.com/xuebinqin/DIS) 去背景 | MIT / Apache-2.0 |
 | [PDF 合并 · 压缩](pdf/) | [BentoPDF](https://github.com/alam00000/bentopdf) 团队的 [Hyper Compress](https://github.com/alam00000/bentopdf-hyper-compress) 压缩引擎 + [pdf-lib](https://github.com/Hopding/pdf-lib) + [PDF.js](https://github.com/mozilla/pdf.js) | AGPL-3.0（这一页按 AGPL 开源，见 [pdf/LICENSE.md](pdf/LICENSE.md)）/ MIT / Apache-2.0 |
 | [今天吃什么](cook/) | 菜谱和成品照片来自 [HowToCook](https://github.com/Anduin2017/HowToCook)；食材图标参考 [YunYouJun/cook](https://github.com/YunYouJun/cook)（见 [cook/NOTICE.md](cook/NOTICE.md)） | Unlicense / MIT |
+| [笔记一键变思维导图](mindmap/) | [simple-mind-map · 思绪思维导图](https://github.com/wanglin2/mind-map)（核心库，自己打包） | MIT |
+| [黑白老照片上色](oldphoto/) | [DDColor](https://github.com/piddnad/DDColor)（阿里巴巴达摩院，ICCV 2023；ddcolor_paper_tiny 模型）；变高清复用 [Real-ESRGAN](https://github.com/xinntao/Real-ESRGAN) | Apache-2.0 / BSD-3-Clause |
 
-`coi-sw.js`：只给「录音转文字」页补上跨源隔离响应头（COOP / COEP）的 Service Worker，让语音识别能开多线程。装上后作用于整个网站，但只接手录音转文字页和它要用的文件（别的页面加载同一批运行库时也会带上这些响应头，不影响使用，见 `days/day09-transcribe/sw_check.mjs`）。`member.js` + `member/codes.json`：工具箱会员码（`config.js` 里配置了 `member` 才启用）。
+`coi-sw.js`：只给「录音转文字」「照片变涂色画」「黑白老照片上色」三页补上跨源隔离响应头（COOP / COEP）的 Service Worker，让语音识别能开多线程。装上后作用于整个网站，但只接手这三页和它们要用的文件（别的页面加载同一批运行库时也会带上这些响应头，不影响使用，见 `days/day09-transcribe/sw_check.mjs`）。`member.js` + `member/codes.json`：工具箱会员码（`config.js` 里配置了 `member` 才启用）。
 
 第三方运行时与模型见 [vendor/README.md](vendor/README.md)、[models/README.md](models/README.md)。
 本仓库由私有工作仓库自动发布，请不要直接在这里改。
