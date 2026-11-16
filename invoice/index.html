@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>发票合并打印 · OFD 发票直接打开 · 自动算合计 · 免费不上传 · 开源宝藏工具箱</title>
+<meta name="description" content="报销用：OFD、PDF 电子发票一次全选，.ofd 不用装阅读器直接看；自动排到 A4 纸上（每页 2 张 / 4 张），自动读出每张的金额、算好合计，查重复发票。文件只在你的手机里处理，不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>发票合并打印</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <input type="file" id="file" multiple hidden>
+  <section class="card" id="main">
+    <div id="empty">
+      <label class="drop-empty" for="file">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 6h28v36l-4.7-3-4.6 3-4.7-3-4.7 3-4.6-3L10 42z"/><path d="M17 16h14M17 23h14M17 30h8"/></svg>
+        <b>添加发票</b>
+        <small>OFD、PDF、图片都行，可以一次选好几张<br>打不开的 .ofd 发票，放进来就能看</small>
+      </label>
+      <button class="ghost-btn" id="sample">手边没有发票？先用 3 张示例试试</button>
+    </div>
+    <div id="listWrap" hidden>
+      <div class="sum" id="sum"></div>
+      <p class="warn" id="warn" hidden></p>
+      <div class="list" id="list"></div>
+      <div class="row2">
+        <label class="ghost-btn" for="file">＋ 继续添加</label>
+        <button class="ghost-btn" id="sortBtn">按开票日期排序</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="opts" hidden>
+    <h2>一张 A4 纸上放几张</h2>
+    <div class="chips" id="pers">
+      <button class="chip" data-p="1">1 张<small>原大小</small></button>
+      <button class="chip on" data-p="2">2 张<small>报销常用</small></button>
+      <button class="chip" data-p="4">4 张<small>最省纸</small></button>
+    </div>
+    <label class="check"><input type="checkbox" id="cut" checked> 画上裁剪线（虚线）</label>
+    <p class="plan" id="plan"></p>
+    <button class="primary" id="go">排好，生成 PDF</button>
+    <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+    <p class="status" id="status"></p>
+    <button class="ghost-btn wide" id="csv">导出报销清单（Excel 能打开的表格）</button>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>发票会上传吗？</summary><p>不会。打开、识别金额、排版、生成 PDF 全部在你的手机（电脑）浏览器里完成，页面没有任何上传接口。发票上有公司名称、税号，这一点可以放心。</p></details>
+    <details><summary>.ofd 是什么？为什么平时打不开？</summary><p>OFD 是国家标准的版式文件格式（GB/T 33190-2016），电子发票除了 PDF 也会给这种格式。Windows、Mac 没有自带的 OFD 阅读器，所以双击打不开。在这里添加进来就能直接看；点缩略图放大，还能单独存成 PDF 发给别人。</p></details>
+    <details><summary>合计金额准不准？</summary><p>OFD 发票里带着结构化的数据（价税合计、发票号码、开票日期），直接读出来，是准的。PDF 发票是从版面文字里找「（小写）¥」后面的数，没找到的会标「请核对」。每一张的金额都可以点进去手改，合计跟着变。<b>提交报销前请自己再对一遍</b>。图片（拍的纸质发票、截图）认不了金额，要手填。</p></details>
+    <details><summary>打印出来清楚吗？能用来报销吗？</summary><p>PDF 发票是原样放进去的（文字还是文字，放大不糊）；OFD 发票按 300dpi 画成图再放进去，打印和原件一样清楚。每页 2 张时发票基本是原大小（四周各留 4 毫米白边，约 96%）。电子发票打印件能不能报销、要不要同时交电子原件，以你们单位财务的要求为准：<b>OFD / PDF 原文件请留好</b>，合并出来的 PDF 只是打印用的，不带原来的电子签章。</p></details>
+    <details><summary>提示「重复」是什么意思？</summary><p>两张发票的发票号码一样，多半是同一张发票下载了两次（或者 PDF、OFD 各下了一份）。重复报销会被财务退回，删掉一张再打。</p></details>
+    <details><summary>竖版的行程单、清单怎么排？</summary><p>竖版整页的文件（打车行程单、销货清单）缩小了看不清，会自动单独占一页 A4，不和发票挤在一起。</p></details>
+    <details><summary>有的 OFD 字体和原版不太一样？</summary><p>OFD 发票一般不带字体文件，而是指定「楷体」「宋体」。电脑上有这些字体，显示出来和原版一样；手机上没有楷体，会换成手机自带的字体，文字内容和位置不变。电子印章只显示图案，不做验签。</p></details>
+  </section>
+</main>
+
+<div class="sheet" id="viewSheet" hidden>
+  <div class="sheet-in">
+    <div class="sheet-hd"><b id="viewTitle" class="ink">发票</b><button class="x" id="viewClose" aria-label="关闭">×</button></div>
+    <div class="view-box" id="viewBox"></div>
+    <p class="hint">点一下图片放大 / 缩小</p>
+    <button class="primary" id="viewSave">单独存成 PDF</button>
+  </div>
+</div>
+
+<div class="sheet" id="outSheet" hidden>
+  <div class="sheet-in">
+    <div class="sheet-hd"><b id="outTitle">排好了</b><button class="x" id="outClose" aria-label="关闭">×</button></div>
+    <div class="sizes" id="outSizes"></div>
+    <p class="meta" id="outMeta"></p>
+    <div class="out-prev" id="outPrevBox"></div>
+    <a class="primary save" id="dlPdf" download>保存 PDF</a>
+    <button class="ghost-btn wide" id="printBtn">直接打印</button>
+    <p class="hint">在微信 / 抖音里保存不了？点右上角「…」选「在浏览器打开」再保存。</p>
+  </div>
+</div>
+
+<footer>
+  <p>OFD 的解析和显示来自开源项目 <a href="https://github.com/flyfish-dev/file-viewer" target="_blank" rel="noopener">file-viewer</a> 的 OFD 渲染器（Apache-2.0，原样使用 npm 包 @file-viewer/renderer-ofd 3.3.4 里的 <a href="https://github.com/DLTech21/ofd.js" target="_blank" rel="noopener">DLTech21/ofd.js</a> 代码）；PDF 的显示用 Mozilla <a href="https://github.com/mozilla/pdf.js" target="_blank" rel="noopener">PDF.js</a>（Apache-2.0），拼版用 <a href="https://github.com/Hopding/pdf-lib" target="_blank" rel="noopener">pdf-lib</a>（MIT）。</p>
+  <p><a href="../vendor/README.md" target="_blank" rel="noopener">第三方组件与许可证</a></p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

@@ -223,5 +223,20 @@
       "老照片",
       "家庭"
     ]
+  },
+  {
+    "day": 16,
+    "slug": "invoice",
+    "name": "发票合并打印",
+    "pain": "报销的电子发票别再一张一张打印",
+    "desc": "OFD、PDF 电子发票一次全选：.ofd 不用装阅读器直接看，每张的金额自动读出来、合计算好，重复的发票会提醒；一张 A4 排 2 张或 4 张，带裁剪线，导出 PDF 直接打印。",
+    "source": "file-viewer（OFD 渲染器 · DLTech21/ofd.js）+ pdf-lib",
+    "source_url": "https://github.com/flyfish-dev/file-viewer",
+    "license": "Apache-2.0 / MIT",
+    "tags": [
+      "效率",
+      "报销",
+      "PDF"
+    ]
   }
 ]
