@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 配音 · 文字转语音 · 开源宝藏工具箱</title>
+<meta name="description" content="把文案粘贴进来，选个声音，一键生成口播配音：数字、日期、多音字自动读对，能调语速，下载 MP3 / WAV，还能导出对好时间的字幕。不限字数、不用登录，文案只在你的设备里处理，不上传。">
+<script>
+// 多线程合成要「跨源隔离」，GitHub Pages 设不了响应头 → 第一次打开时装上 ../coi-sw.js 再自动刷新一次（只刷一次；不支持就单线程照样能用，慢一些）
+(() => {
+  const q = new URLSearchParams(location.search);
+  if (self.crossOriginIsolated || q.get('threads') === '1' || !('serviceWorker' in navigator) || !self.isSecureContext) return;
+  const K = 'coi-reloaded';
+  const again = () => { if (sessionStorage.getItem(K)) return; sessionStorage.setItem(K, '1'); location.reload(); };
+  navigator.serviceWorker.register('../coi-sw.js', { scope: '../' }).then(reg => {
+    if (navigator.serviceWorker.controller || reg.active) again();
+    else navigator.serviceWorker.addEventListener('controllerchange', again, { once: true });
+  }).catch(() => {});
+})();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>AI 配音</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <section class="card" id="step-input">
+    <div class="box">
+      <textarea id="text" placeholder="把要配音的文案粘贴到这里…&#10;数字、日期、电话会自动读成中文，英文单词也能念" spellcheck="false"></textarea>
+      <span class="count" id="count">0 字</span>
+    </div>
+    <div class="tools"><button class="mini" id="paste">粘贴</button><button class="mini" id="clear">清空</button><span>没有文案？试试</span><span class="chips" id="demos"></span></div>
+    <div class="vhead"><span>选个声音 <small>（点一下先试听）</small></span><small id="vnote"></small></div>
+    <div class="voices" id="voices"></div>
+    <div class="row"><span>语速</span><div class="chips" id="speeds"></div></div>
+    <button class="primary" id="go">生成配音</button>
+    <div class="bar" id="bar" hidden><i id="barIn"></i></div>
+    <p class="status" id="status"></p>
+    <p class="hint" id="keep" hidden>生成时别锁屏、别切到别的 App，手机上切走可能会暂停</p>
+  </section>
+
+  <section class="card result" id="result" hidden>
+    <h2>配音 <small id="stat"></small></h2>
+    <div class="wave" id="wave">
+      <canvas id="cv" height="72"></canvas>
+      <div class="ctl">
+        <button class="pp" id="pp" aria-label="播放"><svg viewBox="0 0 24 24"><path class="i-play" d="M8 5v14l11-7z"/><path class="i-pause" d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+        <span class="who" id="who"></span>
+        <span class="time" id="time">00:00 / 00:00</span>
+      </div>
+    </div>
+    <div class="sents" id="sents"></div>
+    <p class="hint">点哪句从哪句开始听；有读错的字，回上面改成同音字再生成一次</p>
+    <label class="ai"><input type="checkbox" id="aiLabel" checked><span><b>结尾加一句语音提示「以上内容由人工智能合成」</b><br><span id="aiNote">按规定，AI 合成的声音要让听的人知道是 AI 合成的。</span></span></label>
+    <button class="primary" id="mp3" disabled>下载 MP3</button>
+    <div class="dl"><button class="btn" id="wav" disabled>下载 WAV <small>无损</small></button><button class="btn" id="srt" disabled>字幕文件 SRT</button></div>
+    <p class="hint">MP3 / WAV 可以直接导入剪映；字幕文件和配音的时间是对好的。在微信 / 抖音里下载不了？点右上角「…」选「在浏览器打开」。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>文案会上传吗？</summary><p>不会。配音在你的浏览器里合成，页面没有任何上传接口，模型下载完以后断网也能用。</p></details>
+    <details><summary>第一次为什么要等？</summary><p>要下载 AI 配音模型和分词库，一共约 80MB（只下载一次，模型存在浏览器里，之后打开直接用）。建议连 Wi-Fi。试听各个声音不用等模型。</p></details>
+    <details><summary>要等多久？</summary><p id="faqSpeed">我们实测（Mac 电脑、Chrome）：模型下载好以后，点生成大约 3 秒开始出声，一分钟的配音大约 35 秒合成完，可以边合成边听。不支持多线程的浏览器（比如有的 App 内置浏览器）要慢两倍多，合成比念得还慢，会一句一句停着等。手机要看性能，我们还没在真机上测过，长文案建议用电脑；合成时大约占 800MB 内存，老手机可能跑不动。合成时别锁屏、别切走。</p></details>
+    <details><summary>有字数限制吗？收费吗？</summary><p id="faqLimit">不收费、不用登录，不按字数计费。</p></details>
+    <details><summary>有的字读错了怎么办？</summary><p>数字、日期、时间、电话、常见单位会自动读成中文，多音字按词典读，大多数能读对。读错的地方，把那个字换成同音字（比如「行长」写成「航长」），或者在想停顿的地方加个逗号，再生成一次。英文单词能念常见的，生僻词会按字母拼读。</p></details>
+    <details><summary>配出来的声音能商用吗？</summary><p>模型和音色都是 Apache-2.0 开源许可，可以商用。但请注意：按《人工智能生成合成内容标识办法》，AI 合成的声音发布时要标明是 AI 生成的——下载的文件里已经带了标识信息，结尾的语音提示默认开着；发到抖音、小红书、视频号时，请勾选「内容由 AI 生成」的声明。</p></details>
+    <details><summary>能克隆我自己的声音吗？</summary><p>不能，这里只有模型自带的几个声音。也请不要用配音去冒充真人、编造别人没说过的话。</p></details>
+  </section>
+</main>
+
+<footer>
+  <p>配音模型：<a href="https://github.com/hexgrad/kokoro" target="_blank" rel="noopener">Kokoro</a> 的中文版 <a href="https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh" target="_blank" rel="noopener">Kokoro-82M v1.1-zh</a>（Apache-2.0，中文音色的数据由龙猫数据提供），用的是 onnx-community 导出的 ONNX，权重压成了 8 位。</p>
+  <p>文字前端移植自 Kokoro 官方的 <a href="https://github.com/hexgrad/misaki" target="_blank" rel="noopener">misaki</a>（Apache-2.0，其中变调规则出自 PaddleSpeech）；分词 <a href="https://github.com/fengkx/jieba-wasm" target="_blank" rel="noopener">jieba-wasm</a>（MIT）· 拼音 <a href="https://github.com/zh-lx/pinyin-pro" target="_blank" rel="noopener">pinyin-pro</a>（MIT），读音修正表对照 pypinyin（MIT）生成 · 推理 ONNX Runtime Web（MIT）· MP3 编码 LAME（LGPL，<a href="https://github.com/arseneyr/wasm-media-encoders" target="_blank" rel="noopener">wasm-media-encoders</a>）· 浏览器端移植与界面由开源宝藏工具箱制作</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

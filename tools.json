@@ -238,5 +238,20 @@
       "报销",
       "PDF"
     ]
+  },
+  {
+    "day": 17,
+    "slug": "tts",
+    "name": "AI 配音",
+    "pain": "给视频配音别再按字数付费",
+    "desc": "文案粘贴进来，选个声音一键生成口播配音：数字、日期、多音字自动读对，能调语速，下载 MP3 / WAV，还能导出对好时间的字幕。不限字数、不用登录。",
+    "source": "Kokoro（Kokoro-82M v1.1-zh）",
+    "source_url": "https://github.com/hexgrad/kokoro",
+    "license": "Apache-2.0",
+    "tags": [
+      "音频",
+      "自媒体",
+      "配音"
+    ]
   }
 ]
