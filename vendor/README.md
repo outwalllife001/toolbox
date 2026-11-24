@@ -19,6 +19,7 @@
 | `ofd/` | [file-viewer](https://github.com/flyfish-dev/file-viewer) 的 OFD 渲染器 npm 包 `@file-viewer/renderer-ofd` 里随包发布的 `vendor/`（它维护的 [DLTech21/ofd.js](https://github.com/DLTech21/ofd.js) 解析 / 渲染代码、出自 PDF.js 的 JBIG2 解码、@lapo/asn1js）+ jszip：`days/day16-invoice/bundle/build.mjs` 用 esbuild 打成一个 ES 模块，**源码未修改**，没带 file-viewer 的界面外壳。各部分许可证原文在 `LICENSES.txt`；第 16 期发票合并打印用 | 3.3.4 | Apache-2.0（asn1js ISC；jszip 选 MIT） |
 | `jieba-wasm/` | [jieba-wasm](https://github.com/fengkx/jieba-wasm)（结巴分词的 Rust 版 [jieba-rs](https://github.com/messense/jieba-rs) 编成的 WASM，词典在 wasm 里；npm 包 `pkg/web/` 的 `jieba_rs_wasm.js` + `jieba_rs_wasm_bg.wasm`，附 LICENSE；第 17 期 AI 配音的分词和词性用） | 2.4.0 | MIT |
 | `wme/` | [wasm-media-encoders](https://github.com/arseneyr/wasm-media-encoders)（npm 包 `dist/umd/WasmMediaEncoder.min.js` + `wasm/mp3.wasm`，附 LICENSE；第 17 期把配音存成 MP3 用，点「下载 MP3」才加载） | 0.7.0 | 包本身 MIT；`mp3.wasm` 里是 [LAME](https://lame.sourceforge.io/) 编码器（LGPL），原样使用、单独一个文件，源码和编译方法见上游仓库 |
+| `qrcode-generator/` | [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator)（npm 包 `dist/qrcode.mjs`，ES 模块，包里没附许可证文件，`LICENSE` 是源码文件头声明的 MIT 全文；第 18 期 WiFi 二维码桌牌用） | 2.0.4 | MIT |
 
 自己托管而不走 CDN：国内访问 jsdelivr / Google 存储不稳定。升级时改 `package.json` 版本，`npm install` 后重新拷贝。
 jscanify 的 npm 包依赖 node-canvas（要编译原生模块），没放进 `package.json`：用 `npm pack jscanify@<版本>` 解包后拷贝上面两个文件。

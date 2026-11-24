@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WiFi 二维码桌牌 · 开源宝藏工具箱</title>
+<meta name="description" content="填上 WiFi 名称和密码，做一张扫一下就能连网的桌牌：6 种样式、4 种大小，导出图片或 A4 一页多张的 PDF（带裁剪线）直接打印。名称和密码不会上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>WiFi 二维码桌牌</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <section class="card" id="form">
+    <h2>你的 WiFi</h2>
+    <label class="fld"><span>WiFi 名称</span>
+      <input id="ssid" maxlength="32" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="手机 WiFi 列表里看到的那个名字"></label>
+    <label class="fld" id="pwdBox"><span>密码</span>
+      <input id="pwd" maxlength="63" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="WiFi 密码"></label>
+    <p class="warn" id="warn" hidden></p>
+    <div class="seg" id="mode" role="group" aria-label="加密方式">
+      <button data-v="WPA" class="on">有密码</button><button data-v="nopass">没有密码</button><button data-v="WEP">旧路由器 (WEP)</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="hidden"> 隐藏网络（手机搜不到这个 WiFi 名称）</label>
+  </section>
+
+  <section class="card" id="prevCard">
+    <div class="h2row"><h2>桌牌预览</h2><button class="mini ghost" id="clear">清空重填</button></div>
+    <div class="prev"><canvas id="cv" aria-label="桌牌预览"></canvas></div>
+    <div class="themes" id="themes" role="group" aria-label="样式"></div>
+    <p class="hint" id="payHint">二维码里装的是 WiFi 名称和密码，手机相机一扫就能连</p>
+  </section>
+
+  <section class="card" id="style">
+    <h2>写什么</h2>
+    <label class="fld"><span>标题<small>店名也行，不填就是「免费 WiFi」</small></span>
+      <input id="title" maxlength="14" autocomplete="off" placeholder="比如：一杯茶馆"></label>
+    <label class="fld"><span>一句话<small>不填就用默认的</small></span>
+      <input id="tag" maxlength="20" autocomplete="off" placeholder="扫一扫，连上就能上网"></label>
+    <label class="chk"><input type="checkbox" id="showPwd" checked> 把密码也印在卡片上（不会扫码的人照着输）</label>
+  </section>
+
+  <section class="card" id="sizeCard">
+    <h2>打印多大<small>A4 纸，比例和 A 系列一样</small></h2>
+    <div class="sizes" id="sizes"></div>
+    <div class="sheet-wrap"><canvas id="sheet" aria-label="A4 拼版预览"></canvas></div>
+    <p class="hint" id="sheetHint"></p>
+  </section>
+
+  <section class="card" id="actions">
+    <button class="primary" id="goPdf">导出 PDF，直接打印</button>
+    <button class="btn" id="goPng">保存这张图片</button>
+    <p class="hint">PDF 是 A4 一页，里面排满同一张桌牌，多张时带裁剪线；图片可以发给打印店</p>
+  </section>
+
+  <section class="card" id="mine">
+    <div class="h2row"><h2>我的桌牌<small>存在这台手机上</small></h2><button class="mini" id="saveIt">保存这套</button></div>
+    <div class="chips" id="saved"></div>
+    <p class="hint left" id="savedHint">店里有好几个 WiFi（前台、包间、员工网）的，填好一个存一个，下次点一下就调出来。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>手机怎么扫才能连上？</summary><p>打开手机相机对准二维码，屏幕上会弹出「加入网络」之类的提示，点一下就连上，不用输密码。iPhone 自带的相机和多数安卓手机的相机、扫一扫都认这种二维码；个别老手机或第三方扫码软件只会显示一串文字，这时照着卡片上印的名称和密码手动连（所以密码默认印在卡片上）。</p></details>
+    <details><summary>二维码里装的是什么？</summary><p>就是一行文字：<code>WIFI:T:WPA;S:名称;P:密码;;</code>。这是各种扫码软件通用的 WiFi 格式（ZXing 约定，开源项目 wifi-card 也用同一种），手机认出开头的 WIFI: 就知道该弹「加入网络」。</p></details>
+    <details><summary>我的 WiFi 名称和密码会上传吗？</summary><p>不会。这个网页没有上传接口，二维码和图片、PDF 都是在你的手机 / 电脑里生成的，断网也能做（导出 PDF 时才需要加载一个 0.2MB 的 PDF 组件）。你填的内容会记在这台手机的浏览器里，方便下次接着改，点「清空重填」就删掉。</p></details>
+    <details><summary>选「有密码」还是「旧路由器 (WEP)」？</summary><p>路由器后台或背面写着 WPA、WPA2、WPA3 的，都选「有密码」，家里和店里的绝大多数都是。只有很老的路由器写着 WEP 才选第三个。没设密码的开放网络选「没有密码」。</p></details>
+    <details><summary>打印出来扫不出来怎么办？</summary><p>先别选太小的尺寸；用黑白或彩色都行，但别让二维码反光、折起来或被杯子挡住。WiFi 名称和密码越长，二维码的格子越多、越难扫，能短就短。实在不行，卡片上同时印了名称和密码，照着手动连。</p></details>
+    <details><summary>密码印在卡片上安全吗？</summary><p>放在店里、家里的桌上，谁到场谁就能看到，这和口头告诉客人是一回事。想少操心：路由器里开「访客网络」单独设一个密码给客人用，卡片上印这个；或者去掉「把密码也印在卡片上」，客人只能扫码连（扫码的人手机里还是能看到密码）。</p></details>
+    <details><summary>隐藏网络是什么意思？</summary><p>有的路由器关掉了「广播 WiFi 名称」，手机的 WiFi 列表里搜不到，只能手动输入名称才能连。这种勾上「隐藏网络」，扫码后手机会直接按名称去连。</p></details>
+  </section>
+</main>
+
+<div class="out" id="out" hidden>
+  <div class="out-bar"><button class="mini ghost" id="outBack">‹ 返回</button><span id="outTitle"></span></div>
+  <div class="out-body">
+    <img id="outImg" alt="导出结果">
+    <p class="out-meta" id="outMeta"></p>
+    <p class="hint" id="wxTip" hidden>你现在在微信 / 抖音自带的浏览器里，可能保存不了文件：长按上面的图片可以保存；PDF 请点右上角「在浏览器打开」再导出。</p>
+  </div>
+  <div class="out-foot"><a class="primary" id="dl" href="#">保存</a><button class="btn" id="outShare" hidden>分享</button></div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<footer>
+  <p>二维码内容格式参考开源项目 <a href="https://github.com/bndw/wifi-card" target="_blank" rel="noopener">wifi-card</a>（MIT），二维码用 <a href="https://github.com/kazuhikoarase/qrcode-generator" target="_blank" rel="noopener">qrcode-generator</a>（MIT）生成，导出 PDF 用 <a href="https://github.com/Hopding/pdf-lib" target="_blank" rel="noopener">pdf-lib</a>（MIT）。</p>
+  <p><a href="NOTICE.md" target="_blank" rel="noopener">许可证说明</a> · 桌牌样式、拼版和界面由开源宝藏工具箱制作。「QR Code」是 DENSO WAVE 的注册商标。</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

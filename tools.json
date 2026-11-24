@@ -253,5 +253,20 @@
       "自媒体",
       "配音"
     ]
+  },
+  {
+    "day": 18,
+    "slug": "wifi",
+    "name": "WiFi 二维码桌牌",
+    "pain": "别再给每个客人念一遍 WiFi 密码",
+    "desc": "填上 WiFi 名称和密码，做一张扫一下就能连网的桌牌：6 种样式、4 种大小，导出图片或 A4 一页多张的 PDF（带裁剪线）直接打印。",
+    "source": "wifi-card（二维码格式）+ qrcode-generator",
+    "source_url": "https://github.com/bndw/wifi-card",
+    "license": "MIT",
+    "tags": [
+      "生活",
+      "小商家",
+      "打印"
+    ]
   }
 ]
