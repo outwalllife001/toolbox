@@ -268,5 +268,20 @@
       "小商家",
       "打印"
     ]
+  },
+  {
+    "day": 19,
+    "slug": "prompter",
+    "name": "跟读提词器",
+    "pain": "对着镜头别再背稿、忘词、一遍遍重录",
+    "desc": "文案粘贴进来，对着手机念：念到哪，字亮到哪、滚到哪，停下来它也停。可以打开前置镜头一边看稿一边录视频。语音识别在你的手机里完成，声音不上传。",
+    "source": "Textream（玩法）+ sherpa-onnx（流式语音识别）",
+    "source_url": "https://github.com/f/textream",
+    "license": "MIT / Apache-2.0",
+    "tags": [
+      "视频",
+      "自媒体",
+      "口播"
+    ]
   }
 ]

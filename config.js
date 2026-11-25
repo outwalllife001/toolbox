@@ -10,6 +10,7 @@ window.SITE_CONFIG = {
   //   qr: 'img/wechat-qr.jpg',      // 可选：放到 site/img/
   //   tools: {                      // 可选：某个工具页单独的价格和说明（不填就用上面的）
   //     scan: { price: '¥5', text: '照片发我，帮你拉正去阴影、合成一份 PDF，压到指定大小' },
+  //     prompter: { price: '¥9.9', text: '把想讲的内容发我，帮你写成 30–60 秒、念起来顺口的口播稿' },
   //   },
   // },
 

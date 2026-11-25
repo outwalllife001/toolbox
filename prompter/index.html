@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>跟读提词器 · 开源宝藏工具箱</title>
+<meta name="description" content="把文案粘贴进来，对着手机念：你念到哪，字就亮到哪、滚到哪，停下来它也停。可以打开前置镜头一边看稿一边录视频。语音识别在你的手机里完成，声音和画面都不上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>跟读提词器</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <section class="card" id="scriptCard">
+    <div class="h2row"><h2>你的稿子</h2><span class="btns"><button class="mini ghost" id="sample">填个示例</button><button class="mini ghost" id="clear">清空</button></span></div>
+    <textarea id="script" rows="5" spellcheck="false" placeholder="把要念的文案粘贴到这里。一句一行或者一整段都行，标点照常写。"></textarea>
+    <p class="meta" id="count">还没有内容</p>
+  </section>
+
+  <section class="card" id="modeCard">
+    <h2>字怎么走</h2>
+    <div class="seg" id="mode" role="group" aria-label="滚动方式">
+      <button data-v="follow" class="on">跟着我的声音走</button><button data-v="auto">匀速滚动</button>
+    </div>
+    <p class="hint left" id="modeHint"></p>
+    <label class="rng" id="speedRow" hidden><span>速度</span><input type="range" id="speed" min="120" max="420" step="10"><b id="speedV"></b></label>
+    <label class="rng"><span>字号</span><input type="range" id="size" min="20" max="56" step="2"><b id="sizeV"></b></label>
+    <label class="chk"><input type="checkbox" id="cam"> 打开前置镜头，一边看稿一边录视频</label>
+    <label class="chk"><input type="checkbox" id="count3"> 开始前倒数 3 秒</label>
+    <label class="chk"><input type="checkbox" id="mirror"> 左右镜像（把手机放在提词器的玻璃下面时用）</label>
+  </section>
+
+  <section class="card" id="actions">
+    <button class="primary" id="go">开始提词</button>
+    <p class="hint" id="goHint">第一次用「跟着我的声音走」要下载约 20MB 的语音识别模型，之后不用再下</p>
+  </section>
+
+  <section class="card" id="mine">
+    <div class="h2row"><h2>我的稿子<small>存在这台手机上</small></h2><button class="mini" id="saveIt">保存这篇</button></div>
+    <div class="chips" id="saved"></div>
+    <p class="hint left" id="savedHint">常用的开场白、口播稿存在这里，下次点一下就调出来。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>它怎么知道我念到哪了？</summary><p>网页里装了一个小的语音识别模型，边听边把你说的话认成字，再和稿子对上位置。它是按读音对的：认成了同音字、漏了一两个字、数字念成汉字，都不影响；你临时加几句稿子里没有的话，它会停在原地等你回来；跳过一句或者回头重念一句，它会跟着跳过去。</p></details>
+    <details><summary>我的声音和视频会上传吗？</summary><p>不会。识别在你的手机 / 电脑里完成，录的视频也只存在浏览器的内存里，点「保存」才写到你的相册或文件里。这个网页没有上传接口，模型下载完以后断网也能用。</p></details>
+    <details><summary>为什么要我允许使用麦克风和摄像头？</summary><p>「跟着我的声音走」要听到你说话，所以要麦克风；勾了「打开前置镜头」才会要摄像头。不想给权限就用「匀速滚动」，它不需要麦克风。</p></details>
+    <details><summary>字不跟着走，或者老是慢半拍？</summary><p>先看顶上有没有「正在听」和跳动的音量条：没有的话是没拿到麦克风。离手机近一点、环境安静一点会准很多；方言、口音很重或者背景有音乐时认不准，可以点一下稿子上的任意一句，手动跳到那里，或者改用「匀速滚动」。目前只认普通话。</p></details>
+    <details><summary>在微信 / 抖音里打不开麦克风？</summary><p>有些 App 自带的浏览器不让网页用麦克风和摄像头。点右上角「在浏览器打开」，用手机自带的浏览器（Safari、Chrome 等）就行。</p></details>
+    <details><summary>录出来的视频是什么格式？稿子会录进去吗？</summary><p>稿子只显示在屏幕上，不会录进视频。苹果手机录出来是 MP4；安卓和电脑上的浏览器多数也是 MP4，少数只能录 WebM，发抖音、微信前可以用工具箱里的「视频压缩」转成 MP4。画面是前置镜头的原始方向（预览是镜像的，和自拍一样）。</p></details>
+    <details><summary>眼神怎么才不飘？</summary><p>稿子显示在屏幕最上面、紧挨着前置镜头，字号别太大（一行 10 个字左右），手机放远一点（一臂以外），眼睛左右移动的幅度就很小。</p></details>
+  </section>
+</main>
+
+<!-- 提词界面：全屏盖在页面上 -->
+<div class="pp" id="pp" hidden>
+  <video id="camV" playsinline muted hidden></video>
+  <canvas id="camC" hidden></canvas>
+  <div class="pp-text" id="ppText"><div class="pp-inner" id="ppInner"></div></div>
+  <div class="pp-top">
+    <button class="pp-x" id="ppExit" aria-label="退出">✕</button>
+    <span class="pp-status" id="ppStatus"><i id="ppDot"></i><span id="ppMsg"></span><span class="lv" id="ppLv"><i></i><i></i><i></i><i></i></span></span>
+    <span class="pp-time" id="ppTime">0:00</span>
+  </div>
+  <div class="pp-load" id="ppLoad" hidden><b id="ppLoadT">正在准备语音识别</b><div class="bar"><i id="ppLoadB"></i></div><small id="ppLoadS">约 20MB，只下这一次</small></div>
+  <div class="pp-count" id="ppCount" hidden></div>
+  <div class="pp-done" id="ppDone" hidden><b>念完了</b><span><button id="ppAgain">再来一遍</button><button id="ppQuit">退出</button></span></div>
+  <div class="pp-bar">
+    <button id="ppSm" aria-label="字小一点">A−</button>
+    <button id="ppLg" aria-label="字大一点">A+</button>
+    <button id="ppPause" class="wide">暂停</button>
+    <button id="ppTop" aria-label="从头开始">从头</button>
+    <button id="ppRec" class="rec" hidden>结束录制</button>
+  </div>
+</div>
+
+<!-- 录完的视频 -->
+<div class="out" id="out" hidden>
+  <div class="out-bar"><button class="mini ghost" id="outBack">‹ 返回</button><span>录好的视频</span></div>
+  <div class="out-body">
+    <video id="outV" controls playsinline></video>
+    <p class="out-meta" id="outMeta"></p>
+    <p class="hint" id="wxTip" hidden>你现在在微信 / 抖音自带的浏览器里，可能保存不了文件：请点右上角「在浏览器打开」再录。</p>
+  </div>
+  <div class="out-foot"><a class="primary" id="dl" href="#">保存视频</a><button class="btn" id="outShare" hidden>分享</button><a class="btn" id="toSub" href="../subtitle/">去加字幕 ›</a></div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<footer>
+  <p>「说到哪亮到哪」的玩法参考开源项目 <a href="https://github.com/f/textream" target="_blank" rel="noopener">Textream</a>（MIT，macOS 提词器）；语音识别用 <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener">sherpa-onnx</a>（Apache-2.0）发布的流式中文模型 streaming zipformer zh-14M（<a href="https://github.com/k2-fsa/icefall" target="_blank" rel="noopener">icefall</a> 训练，Apache-2.0），在 <a href="https://github.com/microsoft/onnxruntime" target="_blank" rel="noopener">onnxruntime-web</a>（MIT）里运行；读音用 <a href="https://github.com/zh-lx/pinyin-pro" target="_blank" rel="noopener">pinyin-pro</a>（MIT）。</p>
+  <p><a href="NOTICE.md" target="_blank" rel="noopener">许可证说明</a> · 网页界面和跟读算法由开源宝藏工具箱制作，没有使用 Textream 的代码。</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script src="../vendor/pinyin-pro/pinyin-pro.min.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

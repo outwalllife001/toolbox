@@ -1,0 +1,132 @@
+:root {
+  --bg: #f3f5f9; --card: #fff; --ink: #141a26; --sub: #667085; --line: #e4e8f0;
+  --pri: #2f6bff; --pri-ink: #fff; --pri-soft: #e8efff; --ok: #12b76a; --red: #e5484d; --amber: #b45309; --amber-soft: #fff4e0;
+  --radius: 18px; --hl: #ffd84d;
+  color-scheme: light;
+}
+[hidden] { display: none !important; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+body.lock { overflow: hidden; }
+.top { padding: 18px 16px 6px; text-align: center; }
+.brand { display: inline-block; font-size: 12px; color: var(--sub); text-decoration: none; letter-spacing: .08em; }
+h1 { margin: 2px 0 6px; font-size: 26px; letter-spacing: .02em; }
+.tag { margin: 0; display: flex; gap: 6px; justify-content: center; }
+.tag span { font-size: 12px; padding: 2px 10px; border-radius: 99px; background: var(--pri-soft); color: var(--pri); font-weight: 600; }
+.member-badge { margin-top: 8px; }
+.member-badge button { border: 0; border-radius: 99px; padding: 5px 14px; font: inherit; font-size: 13px; font-weight: 700; color: #8a4b00; background: linear-gradient(135deg, #ffe7a3, #ffd166); cursor: pointer; }
+.member-badge .mb-on { font-size: 13px; font-weight: 700; color: #8a6100; background: #fff4cc; border-radius: 99px; padding: 4px 12px; }
+main { max-width: 480px; margin: 0 auto; padding: 8px 12px 16px; }
+.card { background: var(--card); border-radius: var(--radius); padding: 14px; margin: 10px 0; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+h2 { font-size: 14px; margin: 2px 0 8px; color: var(--sub); font-weight: 600; }
+h2 small { font-weight: 400; margin-left: 6px; }
+.h2row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.h2row h2 { margin: 0; }
+.btns { display: flex; gap: 6px; }
+.mini { flex: none; border: 0; border-radius: 10px; padding: 5px 10px; font: inherit; font-size: 13px; font-weight: 600; color: var(--pri); background: var(--pri-soft); cursor: pointer; }
+.mini.ghost { background: #f1f3f7; color: var(--sub); }
+.hint { font-size: 12px; color: var(--sub); text-align: center; margin: 10px 0 0; }
+.hint.left { text-align: left; margin: 8px 0 0; }
+
+/* 稿子 */
+#script { display: block; width: 100%; border: 1.5px solid var(--line); border-radius: 12px; padding: 11px 12px; font: inherit; font-size: 16px; line-height: 1.6; color: var(--ink); background: #fff; resize: vertical; min-height: 128px; -webkit-appearance: none; appearance: none; }
+#script:focus { outline: 0; border-color: var(--pri); box-shadow: 0 0 0 3px rgba(47,107,255,.15); }
+#script::placeholder { color: #a6aebb; font-size: 15px; }
+.meta { margin: 6px 2px 0; font-size: 13px; color: var(--sub); }
+.meta b { color: var(--ink); }
+
+/* 选项 */
+.seg { display: flex; gap: 4px; background: #f1f3f7; border-radius: 12px; padding: 3px; }
+.seg button { flex: 1; border: 0; background: transparent; border-radius: 10px; padding: 9px 4px; font: inherit; font-size: 14px; font-weight: 600; color: var(--sub); cursor: pointer; white-space: nowrap; }
+.seg button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(16,24,40,.12); }
+.rng { display: flex; align-items: center; gap: 10px; margin: 12px 0 0; font-size: 13px; }
+.rng span { flex: none; font-weight: 600; width: 2.4em; }
+.rng input { flex: 1; min-width: 0; accent-color: var(--pri); }
+.rng b { flex: none; width: 5.4em; text-align: right; font-size: 13px; color: var(--sub); font-weight: 600; }
+.chk { display: flex; align-items: flex-start; gap: 8px; margin: 12px 0 0; font-size: 13px; color: #475467; cursor: pointer; }
+.chk input { flex: none; width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--pri); }
+
+/* 按钮 */
+.primary { display: block; width: 100%; border: 0; border-radius: 14px; padding: 14px; font: inherit; font-size: 17px; font-weight: 700; text-align: center; text-decoration: none; color: var(--pri-ink); background: var(--pri); box-shadow: 0 6px 16px rgba(47,107,255,.3); cursor: pointer; }
+.primary:disabled, .primary.busy { opacity: .6; }
+.btn { display: block; width: 100%; margin-top: 10px; border: 0; border-radius: 14px; padding: 12px; font: inherit; font-size: 15px; font-weight: 700; color: var(--pri); background: var(--pri-soft); cursor: pointer; text-align: center; text-decoration: none; }
+
+/* 我的稿子 */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; border-radius: 99px; background: #f1f3f7; font-size: 14px; font-weight: 600; overflow: hidden; }
+.chip button { border: 0; background: none; font: inherit; color: inherit; padding: 5px 4px 5px 12px; cursor: pointer; max-width: 12em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chip button.x { padding: 5px 10px 5px 4px; color: #98a2b3; }
+
+.service h2 b { color: #e5484d; margin-left: 4px; }
+.service p { margin: 4px 0 0; font-size: 14px; }
+.service .contact { font-weight: 700; color: var(--ink); margin-top: 8px; }
+.service img { display: block; width: 160px; margin: 10px auto 0; border-radius: 8px; }
+.faq details { border-top: 1px solid var(--line); padding: 10px 0; }
+.faq details:first-of-type { border-top: 0; }
+.faq summary { font-weight: 600; cursor: pointer; }
+.faq p { margin: 6px 0 0; color: var(--sub); font-size: 14px; }
+footer { max-width: 480px; margin: 0 auto; padding: 0 16px 28px; font-size: 12px; color: var(--sub); text-align: center; }
+footer a { color: var(--pri); }
+
+/* ---------- 提词界面 ---------- */
+.pp { position: fixed; inset: 0; z-index: 50; background: #05070c; color: #fff; overflow: hidden; -webkit-user-select: none; user-select: none; }
+#camV, #camC { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); background: #05070c; }
+#camV.tiny { width: 2px; height: 2px; opacity: .02; }
+.pp-text { position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden; padding: 0 20px; }
+/* 上下两头的渐隐：盖一层和底色一样的渐变（不用 mask，省得每帧离屏合成） */
+.pp-text::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 94px; z-index: 2; pointer-events: none; background: linear-gradient(180deg, #05070c 44px, rgba(5,7,12,0)); }
+.pp:not(.cam) .pp-text::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 26%; z-index: 2; pointer-events: none; background: linear-gradient(180deg, rgba(5,7,12,0), #05070c 80%); }
+/* 开了镜头：稿子只占上半屏、紧挨着镜头，下面露出人 */
+.pp.cam .pp-text { bottom: auto; height: 46%; background: linear-gradient(180deg, rgba(5,7,12,.88) 0%, rgba(5,7,12,.74) 66%, rgba(5,7,12,0) 100%); }
+.pp.mirror .pp-text { transform: scaleX(-1); }
+.pp-inner { position: relative; font-size: var(--fs, 30px); line-height: 1.5; font-weight: 700; letter-spacing: .02em; will-change: transform; padding-bottom: 100vh; word-break: break-all; }
+.pp-inner span { color: rgba(255,255,255,.5); }
+.pp-inner span.cur { color: #fff; }
+.pp-inner span.d { color: var(--hl); }
+.pp-inner span.far { opacity: .5; }
+.pp-inner span.off { visibility: hidden; }
+.pp-inner .gap { display: block; height: .55em; }
+/* 顶栏、底栏、弹层要在稿子区域的渐变（z-index 2）上面 */
+.pp-top, .pp-bar, .pp-load, .pp-count, .pp-done { z-index: 3; }
+.pp-top { position: absolute; left: 0; right: 0; top: 0; display: flex; align-items: center; gap: 8px; padding: calc(8px + env(safe-area-inset-top)) 12px 0; }
+.pp-x { flex: none; width: 34px; height: 34px; border: 0; border-radius: 50%; background: rgba(255,255,255,.16); color: #fff; font-size: 16px; cursor: pointer; }
+.pp-status { flex: 0 1 auto; display: inline-flex; align-items: center; gap: 6px; margin: 0 auto; padding: 5px 12px; border-radius: 99px; background: rgba(255,255,255,.14); font-size: 13px; font-weight: 600; white-space: nowrap; }
+#ppDot { width: 8px; height: 8px; border-radius: 50%; background: #98a2b3; }
+.pp-status.on #ppDot { background: #22c55e; }
+.pp-status.rec #ppDot { background: #ff4d4f; }
+.lv { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; }
+.lv i { display: block; width: 3px; height: 3px; border-radius: 2px; background: #22c55e; }
+.pp-status:not(.on) .lv { display: none; }
+.pp-time { flex: none; min-width: 42px; text-align: right; font: 600 14px ui-monospace, "SF Mono", Menlo, monospace; color: rgba(255,255,255,.85); }
+.pp-bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; gap: 8px; justify-content: center; padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(180deg, rgba(5,7,12,0), rgba(5,7,12,.7) 45%); }
+.pp-bar button { flex: none; min-width: 46px; height: 42px; border: 0; border-radius: 21px; padding: 0 12px; font: inherit; font-size: 14px; font-weight: 700; color: #fff; background: rgba(255,255,255,.16); cursor: pointer; white-space: nowrap; }
+.pp-bar .wide { min-width: 76px; background: rgba(255,255,255,.26); }
+.pp-bar .rec { background: #ff4d4f; }
+@media (max-width: 340px) { .pp-bar { gap: 5px; padding-left: 6px; padding-right: 6px; } .pp-bar button { min-width: 38px; padding: 0 9px; font-size: 13px; } .pp-bar .wide { min-width: 54px; } }
+.pp-load { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(280px, 80vw); text-align: center; background: rgba(20,26,38,.9); border-radius: 16px; padding: 16px; }
+.pp-load b { display: block; font-size: 15px; }
+.pp-load small { display: block; margin-top: 8px; font-size: 12px; color: rgba(255,255,255,.65); }
+.bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,.18); margin-top: 10px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--hl); border-radius: 3px; }
+.pp-count { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; border-radius: 50%; background: rgba(20,26,38,.82); display: grid; place-items: center; font-size: 64px; font-weight: 800; color: var(--hl); }
+.pp-done { position: absolute; left: 50%; bottom: 86px; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; background: rgba(20,26,38,.92); border-radius: 16px; padding: 10px 12px 10px 16px; white-space: nowrap; }
+.pp-done b { font-size: 15px; }
+.pp-done span { display: flex; gap: 6px; }
+.pp-done button { border: 0; border-radius: 10px; padding: 7px 12px; font: inherit; font-size: 14px; font-weight: 700; color: #141a26; background: var(--hl); cursor: pointer; }
+.pp-done button + button { background: rgba(255,255,255,.2); color: #fff; }
+
+/* 录完的视频 */
+.out { position: fixed; inset: 0; z-index: 55; background: var(--bg); display: flex; flex-direction: column; animation: up .22s ease; }
+@keyframes up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.out-bar { flex: none; display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #fff; border-bottom: 1px solid var(--line); }
+.out-bar span { flex: 1; min-width: 0; text-align: center; font-weight: 700; margin-right: 56px; }
+.out-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 14px 14px 20px; max-width: 480px; width: 100%; margin: 0 auto; text-align: center; }
+.out-body video { display: block; max-width: 100%; max-height: 50vh; margin: 0 auto; border-radius: 10px; box-shadow: 0 6px 22px rgba(20,26,38,.22); background: #000; }
+.out-meta { margin: 12px 0 0; font-size: 13px; color: var(--sub); }
+.out-foot { flex: none; max-width: 480px; width: 100%; margin: 0 auto; padding: 10px 14px calc(14px + env(safe-area-inset-bottom)); }
+.out-foot .btn { margin-top: 8px; }
+.toast { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 60; max-width: 88vw; background: rgba(20,26,38,.92); color: #fff; font-size: 14px; padding: 8px 14px; border-radius: 12px; text-align: center; }
