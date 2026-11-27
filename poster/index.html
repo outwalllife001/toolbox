@@ -5,6 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <title>店铺海报 · 开源宝藏工具箱</title>
 <meta name="description" content="开店做活动海报：选一个模板，换上自己拍的商品照片（能一键抠掉背景），改成自己的店名和价格，换配色、换字体，导出高清图片或 A4 打印用的 PDF。字体都是可以商用的开源字体，照片不会上传。">
+<script>
+// 「一键抠图」开多线程要「跨源隔离」，GitHub Pages 设不了响应头 → 装上网站根目录的 coi-sw.js，再自动刷新一次（只刷一次；已经点进模板就不刷了，下次打开再生效；不支持就单线程照样能用，只是抠图慢两三倍）
+(() => {
+  const q = new URLSearchParams(location.search);
+  if (self.crossOriginIsolated || q.get('threads') === '1' || !('serviceWorker' in navigator) || !self.isSecureContext) return;
+  const K = 'coi-reloaded';
+  const again = () => {
+    const ed = document.getElementById('ed');
+    if (sessionStorage.getItem(K) || (ed && !ed.hidden)) return;
+    sessionStorage.setItem(K, '1'); location.reload();
+  };
+  navigator.serviceWorker.register('../coi-sw.js', { scope: '../' }).then(r => {
+    if (!navigator.serviceWorker.controller && !r.active) return navigator.serviceWorker.addEventListener('controllerchange', again, { once: true });
+    // 已经有旧版的 Service Worker 在管（以前开过录音转文字等页面）：等新版装好再刷
+    r.update().catch(() => {}).then(() => {
+      const w = r.installing || r.waiting;
+      if (!w) return again();
+      w.addEventListener('statechange', () => { if (w.state === 'activated') again(); });
+    });
+  }).catch(() => {});
+})();
+</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>

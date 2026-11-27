@@ -27,7 +27,7 @@
 | [跟读提词器](prompter/) | 语音识别流程移植自 [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx)（模型 streaming zipformer zh-14M）；玩法参考 [Textream](https://github.com/f/textream)（没用代码）；拼音 [pinyin-pro](https://github.com/zh-lx/pinyin-pro)（见 [prompter/NOTICE.md](prompter/NOTICE.md)） | Apache-2.0 / MIT |
 | [店铺海报](poster/) | 编辑器内核来自 [vue-fabric-editor · 快图设计](https://github.com/ikuaitu/vue-fabric-editor) + [fabric.js](https://github.com/fabricjs/fabric.js)（自己打包，源码未改）；字体是思源黑体、得意黑、霞鹜文楷、站酷快乐体、站酷庆科黄油体、马善政毛笔楷书的常用字子集（改了内部名称，见 [poster/NOTICE.md](poster/NOTICE.md)）；抠图复用「AI 抠图」；模板、贴纸、界面自己做 | MIT / SIL OFL 1.1（字体）/ Apache-2.0（抠图模型） |
 
-`coi-sw.js`：只给「录音转文字」「照片变涂色画」「黑白老照片上色」「AI 配音」四页补上跨源隔离响应头（COOP / COEP）的 Service Worker，让语音识别能开多线程。装上后作用于整个网站，但只接手这三页和它们要用的文件（别的页面加载同一批运行库时也会带上这些响应头，不影响使用，见 `days/day09-transcribe/sw_check.mjs`）。`member.js` + `member/codes.json`：工具箱会员码（`config.js` 里配置了 `member` 才启用）。
+`coi-sw.js`：只给「录音转文字」「照片变涂色画」「黑白老照片上色」「AI 配音」「店铺海报」五页补上跨源隔离响应头（COOP / COEP）的 Service Worker，让语音识别、抠图能开多线程。装上后作用于整个网站，但只接手这三页和它们要用的文件（别的页面加载同一批运行库时也会带上这些响应头，不影响使用，见 `days/day09-transcribe/sw_check.mjs`）。`member.js` + `member/codes.json`：工具箱会员码（`config.js` 里配置了 `member` 才启用）。
 
 第三方运行时与模型见 [vendor/README.md](vendor/README.md)、[models/README.md](models/README.md)。
 本仓库由私有工作仓库自动发布，请不要直接在这里改。
