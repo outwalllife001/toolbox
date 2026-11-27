@@ -20,6 +20,7 @@
 | `jieba-wasm/` | [jieba-wasm](https://github.com/fengkx/jieba-wasm)（结巴分词的 Rust 版 [jieba-rs](https://github.com/messense/jieba-rs) 编成的 WASM，词典在 wasm 里；npm 包 `pkg/web/` 的 `jieba_rs_wasm.js` + `jieba_rs_wasm_bg.wasm`，附 LICENSE；第 17 期 AI 配音的分词和词性用） | 2.4.0 | MIT |
 | `wme/` | [wasm-media-encoders](https://github.com/arseneyr/wasm-media-encoders)（npm 包 `dist/umd/WasmMediaEncoder.min.js` + `wasm/mp3.wasm`，附 LICENSE；第 17 期把配音存成 MP3 用，点「下载 MP3」才加载） | 0.7.0 | 包本身 MIT；`mp3.wasm` 里是 [LAME](https://lame.sourceforge.io/) 编码器（LGPL），原样使用、单独一个文件，源码和编译方法见上游仓库 |
 | `qrcode-generator/` | [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator)（npm 包 `dist/qrcode.mjs`，ES 模块，包里没附许可证文件，`LICENSE` 是源码文件头声明的 MIT 全文；第 18 期 WiFi 二维码桌牌用） | 2.0.4 | MIT |
+| `kuaitu-core/` | [vue-fabric-editor · 快图设计](https://github.com/ikuaitu/vue-fabric-editor) 的编辑器内核 `packages/core`（Editor、ServersPlugin 和画布 / 控制点 / 对齐辅助线 / 历史 / 图层 / 居中 / 快捷键 8 个插件，commit `b3bdcfb`，**源码未修改**）+ [fabric.js](https://github.com/fabricjs/fabric.js) 5.3.0 + tapable、hotkeys-js、events、lodash-es、uuid：`days/day20-poster/bundle/build.mjs` 用 esbuild 打成一个 ES 模块（上游引用的 `@vueuse/core` 换成了三个同名小函数，不带 Vue）。各部分许可证原文在 `LICENSES.txt`；第 20 期店铺海报用 | core `b3bdcfb` / fabric 5.3.0 | MIT |
 
 自己托管而不走 CDN：国内访问 jsdelivr / Google 存储不稳定。升级时改 `package.json` 版本，`npm install` 后重新拷贝。
 jscanify 的 npm 包依赖 node-canvas（要编译原生模块），没放进 `package.json`：用 `npm pack jscanify@<版本>` 解包后拷贝上面两个文件。

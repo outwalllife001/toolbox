@@ -283,5 +283,20 @@
       "自媒体",
       "口播"
     ]
+  },
+  {
+    "day": 20,
+    "slug": "poster",
+    "name": "店铺海报",
+    "pain": "店里做张活动海报别再花钱找人做",
+    "desc": "选一个模板，换上自己拍的商品照片（能一键抠掉背景），改成自己的店名和价格，换配色、换字体，导出高清图片或 A4 打印用的 PDF。字体都是可以商用的开源字体，照片不上传。",
+    "source": "vue-fabric-editor · 快图设计 + fabric.js",
+    "source_url": "https://github.com/ikuaitu/vue-fabric-editor",
+    "license": "MIT / SIL OFL 1.1（字体）",
+    "tags": [
+      "图片",
+      "小商家",
+      "海报"
+    ]
   }
 ]

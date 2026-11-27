@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>店铺海报 · 开源宝藏工具箱</title>
+<meta name="description" content="开店做活动海报：选一个模板，换上自己拍的商品照片（能一键抠掉背景），改成自己的店名和价格，换配色、换字体，导出高清图片或 A4 打印用的 PDF。字体都是可以商用的开源字体，照片不会上传。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="../">开源宝藏工具箱</a>
+  <h1>店铺海报</h1>
+  <p class="tag"><span>免费</span><span>不上传</span><span>开源</span></p>
+  <div class="member-badge" data-member-badge hidden></div>
+</header>
+
+<main>
+  <section class="card" id="resume" hidden>
+    <div class="resume-row">
+      <img id="resumeImg" alt="">
+      <div><b>上次没做完的海报</b><span id="resumeMeta"></span></div>
+      <button class="mini" id="resumeGo">接着做</button>
+    </div>
+  </section>
+
+  <section class="card" id="pick">
+    <h2>选一个模板<small>进去再换照片、改字、换配色</small></h2>
+    <div class="cats" id="cats" role="group" aria-label="模板分类"></div>
+    <div class="tpls" id="tpls"></div>
+    <p class="hint">模板里的店名、价格、电话都是示意，点一下就能改</p>
+  </section>
+
+  <section class="card" id="mine">
+    <h2>我的海报<small>存在这台手机上</small></h2>
+    <div class="drafts" id="drafts"></div>
+    <p class="hint left" id="draftsHint">做到一半可以点右上角的「保存」，下次从这里接着改；每个月的活动海报改改日期和价格就能再用。</p>
+  </section>
+
+  <section class="card service" id="service" hidden></section>
+
+  <section class="card faq">
+    <h2>常见问题</h2>
+    <details><summary>怎么改上面的字、换成自己的照片？</summary><p>点一下要改的字，下面出现「改文字」；点带相机图标的虚线框，下面出现「换成我的照片」。选中以后可以拖着挪位置，拖四个角放大缩小，拖下面的圆圈旋转。字太长会自动缩小，不会跑出海报。</p></details>
+    <details><summary>我的照片会上传吗？</summary><p>不会。这个网页没有上传接口，换照片、抠图、导出都在你的手机 / 电脑里完成。「一键抠图」第一次用要下载一个约 42MB 的 AI 模型（和本站的「AI 抠图」是同一个），之后就不用再下了。</p></details>
+    <details><summary>这些字体能商用吗？做的海报能用来做生意吗？</summary><p>页面里的 6 款字体都来自开源字体：思源黑体、得意黑、霞鹜文楷、站酷快乐体、站酷庆科黄油体、马善政毛笔楷书，许可证都是 SIL OFL 1.1——允许免费用在商业用途上（印海报、做图都可以），只是不能把字体文件本身拿去单独卖。本页用的是裁剪过的常用字版本（6763 个常用汉字），按许可证要求改了内部名称，原许可证见页面底部「许可证说明」。<br>你自己放进去的照片、Logo 和文案要你自己有权使用。</p></details>
+    <details><summary>有的字显示成了别的字体？</summary><p>为了打开快，每款字体只带了 6763 个常用汉字。很生僻的字（部分人名、地名用字）不在里面，会用手机自带的字体顶上，看起来和旁边的字不一样。遇到了可以换成「端正粗黑」，它和手机自带的黑体最接近。</p></details>
+    <details><summary>导出的图多大？能打印吗？</summary><p>竖版海报 1242×1656、手机全屏 1080×1920、方形主图 1080×1080，发朋友圈、发群、当商品主图都够。要打印贴在店里，尺寸选「A4 打印」：导出 2480×3508 像素（A4 纸 300dpi），可以存图片，也可以存 PDF 直接发给打印店。</p></details>
+    <details><summary>换了尺寸，排版乱了怎么办？</summary><p>换尺寸时每个元素会按比例挪位置、缩放，大多数情况不用再动。方形主图比较矮，字会变小一些；觉得挤就删掉一两行次要的字，或者拖一下位置。换尺寸以后不能撤销到换之前，不满意再换回去就行。</p></details>
+    <details><summary>没换的「点这里换成你的照片」会印出来吗？</summary><p>不会。没换照片的虚线框只在编辑时显示，导出的图片里那一块是空的。不想要图片就选中它点「删除」。</p></details>
+    <details><summary>做到一半关掉了怎么办？</summary><p>编辑时每改一步都会自动存在这台手机的浏览器里，下次打开这个页面，最上面有「上次没做完的海报」。想长期留着就点「保存」放进「我的海报」。清理浏览器数据会把它们一起清掉。</p></details>
+  </section>
+</main>
+
+<!-- 编辑器（全屏） -->
+<div class="ed" id="ed" hidden>
+  <div class="ed-top">
+    <button class="ib" id="edBack" aria-label="返回">‹</button>
+    <button class="ib" id="undo" aria-label="撤销" disabled>↶</button>
+    <button class="ib" id="redo" aria-label="重做" disabled>↷</button>
+    <span class="grow"></span>
+    <button class="tb" id="sizeBtn">尺寸</button>
+    <button class="tb" id="saveBtn">保存</button>
+    <button class="tb pri" id="exportBtn">导出</button>
+  </div>
+  <div class="ed-stage" id="workspace"><canvas id="cv"></canvas></div>
+  <div class="ed-busy" id="edBusy" hidden><div><b id="busyText">正在处理…</b><i><u id="busyBar"></u></i></div></div>
+  <div class="sheet" id="sheet" hidden></div>
+  <div class="ed-bar" id="bar"></div>
+</div>
+<input type="file" id="pickPhoto" accept="image/*" hidden>
+
+<div class="out" id="out" hidden>
+  <div class="out-bar"><button class="mini ghost" id="outBack">‹ 返回</button><span id="outTitle"></span></div>
+  <div class="out-body">
+    <img id="outImg" alt="导出结果">
+    <p class="out-meta" id="outMeta"></p>
+    <div class="out-more" id="outMore"></div>
+    <p class="hint" id="wxTip" hidden>你现在在微信 / 抖音自带的浏览器里，可能保存不了文件：长按上面的图片可以保存；要存 PDF 请点右上角「在浏览器打开」。</p>
+  </div>
+  <div class="out-foot"><a class="primary" id="dl" href="#">保存图片</a><button class="btn" id="outShare" hidden>分享</button></div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<footer>
+  <p>编辑器内核来自开源项目 <a href="https://github.com/ikuaitu/vue-fabric-editor" target="_blank" rel="noopener">vue-fabric-editor · 快图设计</a>（MIT）和 <a href="https://github.com/fabricjs/fabric.js" target="_blank" rel="noopener">fabric.js</a>（MIT）；字体源自思源黑体、得意黑、霞鹜文楷、站酷快乐体、站酷庆科黄油体、马善政毛笔楷书（均为 SIL OFL 1.1）；抠图用本站「AI 抠图」的模型（IS-Net，Apache-2.0）；导出 PDF 用 <a href="https://github.com/Hopding/pdf-lib" target="_blank" rel="noopener">pdf-lib</a>（MIT）。</p>
+  <p><a href="NOTICE.md" target="_blank" rel="noopener">许可证说明</a> · 模板、贴纸、配色和手机界面由开源宝藏工具箱制作。</p>
+</footer>
+<script src="../config.js"></script>
+<script src="../member.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
